@@ -1,0 +1,34 @@
+@startuml
+scale 800 width
+
+state "Main Menu" as MainMenu
+MainMenu : 1. Current rate
+MainMenu : 2. Settings
+MainMenu : 3. Feedback/Bug report
+
+state "Current rate (First Currency)" as CurrentRateFirst
+CurrentRateFirst : 1..n. Выбрать первую \nвалюту из предложенных, \nотсортированных по алфавиту
+CurrentRateFirst : n+1. Cancel
+
+state "Current rate (Second Currency)" as CurrentRateSecond
+CurrentRateSecond : 1..n. Выбрать вторую \nвалюту из предложенных, \nотсортированных по алфавиту
+CurrentRateSecond : n+1. Cancel
+
+state "Settings" as Settings
+Settings: ... TODO
+Settings: Cancel
+
+state "Feedback/Bug report" as Feedback
+Feedback: 1. Menu
+
+MainMenu --> CurrentRateFirst : 1
+MainMenu --> Settings : 2
+MainMenu --> Feedback : 3
+
+CurrentRateFirst --> MainMenu : n+1
+CurrentRateFirst --> CurrentRateSecond : 1
+Settings --> MainMenu
+Feedback --> MainMenu : 1
+CurrentRateSecond --> MainMenu : n+1
+
+@enduml
