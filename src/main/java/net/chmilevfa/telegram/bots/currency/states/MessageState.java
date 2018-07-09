@@ -1,5 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.states;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Supported states for user in menus.
  *
@@ -8,6 +10,17 @@ package net.chmilevfa.telegram.bots.currency.states;
  */
 public enum MessageState {
 
-    START_STATE,
-    CHOOSE_CURRENCY
+    MAIN_MENU(0),
+    CHOOSE_CURRENCY(1);
+
+    int code;
+
+    MessageState(int code) {
+        this.code = code;
+    }
+
+    @JsonValue
+    public int getCode() {
+        return code;
+    }
 }

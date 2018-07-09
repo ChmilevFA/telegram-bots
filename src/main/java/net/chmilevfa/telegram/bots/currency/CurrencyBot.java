@@ -30,7 +30,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
         SendMessage sendMessageRequest;
         switch (messageState) {
-            case START_STATE:
+            case MAIN_MENU:
             case CHOOSE_CURRENCY:
             default:
                 sendMessageRequest = DEFAULT_STATE_HANDLER.getMessageDefault(message);
@@ -41,7 +41,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private MessageState getMessageState(Integer UserId, Long chatId) {
         //TODO get actual stored state for user with UserId in chat with chatId
-        return MessageState.START_STATE;
+        return MessageState.MAIN_MENU;
     }
 
     @Override
