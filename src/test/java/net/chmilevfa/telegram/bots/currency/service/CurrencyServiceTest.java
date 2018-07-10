@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram.bots.currency;
+package net.chmilevfa.telegram.bots.currency.service;
 
 import org.junit.Assert;
 import org.junit.Before;

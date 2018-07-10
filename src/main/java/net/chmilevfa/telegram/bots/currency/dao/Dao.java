@@ -1,5 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.dao;
 
+import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.states.MessageState;
 
 /**
@@ -10,7 +11,33 @@ import net.chmilevfa.telegram.bots.currency.states.MessageState;
  */
 public interface Dao {
 
-    public void saveMessageState(Integer userId, Long chatId, MessageState state);
+    /**
+     *
+     * @param userId
+     * @param chatId
+     * @param state
+     */
+    void saveMessageState(Integer userId, Long chatId, MessageState state);
 
-    public MessageState getState(Integer userId, Long chatId);
+    /**
+     *
+     * @param userId
+     * @param chatId
+     * @return
+     */
+    MessageState getState(Integer userId, Long chatId);
+
+    /**
+     *
+     * @param chatId
+     * @param currency
+     */
+    void saveFirstUserCurrency(Long chatId, Currencies currency);
+
+    /**
+     *
+     * @param chatId
+     * @return
+     */
+    Currencies getFirstUserCurrency(Long chatId);
 }

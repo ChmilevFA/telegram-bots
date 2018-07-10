@@ -1,6 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.dao.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.InMemoryData;
 import net.chmilevfa.telegram.bots.currency.states.MessageState;
@@ -17,8 +18,42 @@ import java.io.IOException;
 public class JsonFileDao implements Dao, AutoCloseable {
 
     private final static String FILE_NAME = "data.json";
+    private static volatile JsonFileDao instance;
 
     private InMemoryData data;
+
+    private JsonFileDao() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            File file = new File(FILE_NAME);
+            if(file.exists() && !file.isDirectory()) {
+                this.data = objectMapper.readValue(file, InMemoryData.class);
+            }
+        } catch (IOException e) {
+            //TODO log and handle
+            e.printStackTrace();
+        }
+        if (this.data == null) {
+            data = new InMemoryData();
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    /**
+     * Get Singleton instance
+     *
+     * @return instance of the class
+     */
+    public static JsonFileDao getInstance() {
+        if (instance == null) {
+            synchronized (JsonFileDao.class) {
+                if (instance == null) {
+                    instance = new JsonFileDao();
+                }
+            }
+        }
+        return instance;
+    }
 
     @Override
     public void saveMessageState(Integer userId, Long chatId, MessageState state) {
@@ -30,14 +65,24 @@ public class JsonFileDao implements Dao, AutoCloseable {
         return data.getMessageState(userId, chatId);
     }
 
-    public void init() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        data = objectMapper.readValue(new File(FILE_NAME), InMemoryData.class);
+    @Override
+    public void saveFirstUserCurrency(Long chatId, Currencies currency) {
+        data.saveFirstUserCurrency(chatId, currency);
     }
 
     @Override
-    public void close() throws IOException {
+    public Currencies getFirstUserCurrency(Long chatId) {
+        return data.getFirstUserCurrency(chatId);
+    }
+
+    @Override
+    public void close() {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File(FILE_NAME), data);
+        try {
+            objectMapper.writeValue(new File(FILE_NAME), data);
+        } catch (IOException e) {
+            //TODO log and handle
+            e.printStackTrace();
+        }
     }
 }

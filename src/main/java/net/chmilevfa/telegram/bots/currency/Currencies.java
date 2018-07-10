@@ -7,6 +7,7 @@ package net.chmilevfa.telegram.bots.currency;
  * @since 07.07.18
  */
 public enum Currencies {
+
     EUR,
     USD,
     PLN,
@@ -15,9 +16,10 @@ public enum Currencies {
 
     public static boolean containsByName(String name) {
         for (Currencies currencyEnum : Currencies.values()) {
-            if (currencyEnum.name().equalsIgnoreCase(name))
+            if (currencyEnum.name().equalsIgnoreCase(name)) {
                 return true;
             }
+        }
         return false;
     }
 }

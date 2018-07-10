@@ -10,8 +10,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum MessageState {
 
-    MAIN_MENU(0),
-    CHOOSE_CURRENCY(1);
+    DEFAULT(0),
+    MAIN_MENU(1),
+    CHOOSE_CURRENT_RATE_FIRST(2),
+    CHOOSE_CURRENT_RATE_SECOND(3),
+    SETTINGS(3),
+    FEEDBACK(4);
 
     int code;
 

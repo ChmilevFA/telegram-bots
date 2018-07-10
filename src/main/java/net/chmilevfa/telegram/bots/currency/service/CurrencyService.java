@@ -1,7 +1,8 @@
-package net.chmilevfa.telegram.bots.currency;
+package net.chmilevfa.telegram.bots.currency.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.chmilevfa.telegram.bots.currency.Currencies;
 
 import java.io.BufferedReader;
 import java.io.IOException;

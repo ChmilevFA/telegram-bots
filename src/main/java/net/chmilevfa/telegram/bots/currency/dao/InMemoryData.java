@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.states.MessageState;
 
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class InMemoryData {
     @JsonDeserialize(keyUsing = DialogIdDeserializer.class)
     private Map<DialogId, MessageState> states = new HashMap<>();
 
+    /** TODO what for? */
+    private Map<Long, Currencies> firstUserCurrency = new HashMap<>();
+
     public void saveState(Integer userId, Long chatId, MessageState state) {
         DialogId dialogId = new DialogId(userId, chatId);
         states.put(dialogId, state);
@@ -38,6 +42,14 @@ public class InMemoryData {
     public MessageState getMessageState(Integer userId, Long chatId) {
         DialogId dialogId = new DialogId(userId, chatId);
         return states.getOrDefault(dialogId, MessageState.MAIN_MENU);
+    }
+
+    public void saveFirstUserCurrency(Long chatId, Currencies currency) {
+        firstUserCurrency.put(chatId, currency);
+    }
+
+    public Currencies getFirstUserCurrency(Long chatId) {
+        return firstUserCurrency.remove(chatId);
     }
 
     @Override
