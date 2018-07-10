@@ -18,7 +18,7 @@ public class StringService {
     public static final String HELLO_MESSAGE = "I can show you currency rate.\nPlease choose one option.";
     public static final String CHOOSE_FIRST_CURRENCY = "Please choose first currency";
     public static final String CHOOSE_SECOND_CURRENCY = "Please choose second currency";
-    public static final String CURRENCY_RATE = "Current rate for **%s** is **%s**";
+    public static final String CURRENCY_RATE = "Current rate for *%s* is *%s*";
     public static final String WRITE_FEEDBACK = "Please write feedback.\nI will send it to my developer.";
     public static final String THANKS_FEEDBACK = "Thank you for a feedback! I already sent it to my developer\n\n";
     public static final String FEEDBACK_FOR_DEVELOPER = "Feedback from @%s\n";
