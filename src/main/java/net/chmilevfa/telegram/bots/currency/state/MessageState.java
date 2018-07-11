@@ -1,5 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.state;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -28,5 +29,13 @@ public enum MessageState {
         return code;
     }
 
-    //TODO add @JsonCreator
+    @JsonCreator
+    public static MessageState getMessageStateByCode(int code) {
+        for (MessageState currentState : MessageState.values()) {
+            if (currentState.getCode() == code) {
+                return currentState;
+            }
+        }
+        throw new IllegalArgumentException("Illegal code for parsing: " + code);
+    }
 }
