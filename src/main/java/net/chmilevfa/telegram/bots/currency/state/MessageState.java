@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -14,8 +14,8 @@ public enum MessageState {
     MAIN_MENU(1),
     CHOOSE_CURRENT_RATE_FIRST(2),
     CHOOSE_CURRENT_RATE_SECOND(3),
-    SETTINGS(3),
-    FEEDBACK(4);
+    SETTINGS(4),
+    FEEDBACK(5);
 
     int code;
 
@@ -27,4 +27,6 @@ public enum MessageState {
     public int getCode() {
         return code;
     }
+
+    //TODO add @JsonCreator
 }

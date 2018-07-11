@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.service.StringService;

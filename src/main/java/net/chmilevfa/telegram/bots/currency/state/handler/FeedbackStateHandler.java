@@ -1,6 +1,7 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
-import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
+import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -14,14 +15,8 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.THANKS_
  * @author chmilevfa
  * @since 10.07.18
  */
+@Component
 public final class FeedbackStateHandler implements StateHandler {
-
-    //TODO move to DI should be singleton
-    private final JsonFileDao dao;
-
-    public FeedbackStateHandler(JsonFileDao dao) {
-        this.dao = dao;
-    }
 
     @Override
     public SendMessage getMessageToSend(Message message) {

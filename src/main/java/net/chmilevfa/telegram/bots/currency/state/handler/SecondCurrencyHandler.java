@@ -1,9 +1,14 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
+import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
 import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -18,16 +23,16 @@ import java.util.Objects;
  * @author chmilevfa
  * @since 10.07.18
  */
+@Component
 public class SecondCurrencyHandler implements StateHandler {
 
-    //TODO move to DI should be singleton
-    private static final StateHandler DEFAULT_STATE_HANDLER = new DefaultStateHandler(JsonFileDao.getInstance());
-
-    //TODO move to DI should be singleton
-    private final JsonFileDao dao;
+    private final StateHandler defaultStateHandler;
+    private final Dao dao;
     private final CurrencyService currencyService;
 
-    public SecondCurrencyHandler(JsonFileDao dao, CurrencyService currencyService) {
+    @Autowired
+    public SecondCurrencyHandler(StateHandler defaultStateHandler, JsonFileDao dao, CurrencyService currencyService) {
+        this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
         this.currencyService = currencyService;
     }
@@ -37,13 +42,13 @@ public class SecondCurrencyHandler implements StateHandler {
         if (message.hasText() && Currencies.containsByName(message.getText().trim())) {
             return onCurrentRateChosen(message);
         }
-        return DEFAULT_STATE_HANDLER.getMessageToSend(message);
+        return defaultStateHandler.getMessageToSend(message);
     }
 
     private SendMessage onCurrentRateChosen(Message message) {
         Currencies firstCurrency = dao.getFirstUserCurrency(message.getChatId());
         if (Objects.isNull(firstCurrency)) {
-            DEFAULT_STATE_HANDLER.getMessageToSend(message);
+            defaultStateHandler.getMessageToSend(message);
         }
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
         Currencies secondCurrency = Currencies.valueOf(message.getText().trim());

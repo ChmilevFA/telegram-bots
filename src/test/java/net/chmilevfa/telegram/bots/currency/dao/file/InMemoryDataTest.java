@@ -1,9 +1,9 @@
-package net.chmilevfa.telegram.bots.currency.dao;
+package net.chmilevfa.telegram.bots.currency.dao.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
-import net.chmilevfa.telegram.bots.currency.states.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

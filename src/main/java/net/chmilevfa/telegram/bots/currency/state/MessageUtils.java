@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -18,16 +18,16 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.SETTING
  * @author chmilevfa
  * @since 10.07.18
  */
-final class MessageUtils {
+public final class MessageUtils {
 
     /**
-     *
+     * TODO
      * @param message
      * @param replyKeyboardMarkup
      * @param textMessage
      * @return
      */
-    static SendMessage getSendMessageWithKeyboard(
+    public static SendMessage getSendMessageWithKeyboard(
             Message message,
             ReplyKeyboardMarkup replyKeyboardMarkup,
             String textMessage) {
@@ -43,10 +43,10 @@ final class MessageUtils {
     }
 
     /**
-     *
+     * TODO
      * @return
      */
-    static ReplyKeyboardMarkup getMainMenuKeyboard() {
+    public static ReplyKeyboardMarkup getMainMenuKeyboard() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);

@@ -3,8 +3,8 @@ package net.chmilevfa.telegram.bots.currency.dao.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
-import net.chmilevfa.telegram.bots.currency.dao.InMemoryData;
-import net.chmilevfa.telegram.bots.currency.states.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.io.IOException;
  * @author chmilevfa
  * @since 09.07.18
  */
+@Repository("dao")
 public class JsonFileDao implements Dao, AutoCloseable {
 
     private final static String FILE_NAME = "data.json";

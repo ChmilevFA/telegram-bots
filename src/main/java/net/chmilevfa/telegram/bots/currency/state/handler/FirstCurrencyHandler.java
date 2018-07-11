@@ -1,7 +1,12 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
+import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -14,15 +19,15 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.CHOOSE_
  * @author chmilevfa
  * @since 10.07.18
  */
+@Component
 public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler implements StateHandler {
 
-    //TODO move to DI should be singleton
-    private static final StateHandler DEFAULT_STATE_HANDLER = new DefaultStateHandler(JsonFileDao.getInstance());
+    private final StateHandler defaultStateHandler;
+    private final Dao dao;
 
-    //TODO move to DI should be singleton
-    private final JsonFileDao dao;
-
-    public FirstCurrencyHandler(JsonFileDao dao) {
+    @Autowired
+    public FirstCurrencyHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+        this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
 
@@ -31,7 +36,7 @@ public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler imp
         if (message.hasText() && Currencies.containsByName(message.getText().trim())) {
             return onCurrentRateChosen(message);
         }
-        return DEFAULT_STATE_HANDLER.getMessageToSend(message);
+        return defaultStateHandler.getMessageToSend(message);
     }
 
     private SendMessage onCurrentRateChosen(Message message) {

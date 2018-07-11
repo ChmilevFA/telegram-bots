@@ -1,7 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.dao;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
-import net.chmilevfa.telegram.bots.currency.states.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
 
 /**
  * Simple Dao for state of currency bot.

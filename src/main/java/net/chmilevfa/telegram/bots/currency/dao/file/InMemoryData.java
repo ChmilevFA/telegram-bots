@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram.bots.currency.dao;
+package net.chmilevfa.telegram.bots.currency.dao.file;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import net.chmilevfa.telegram.bots.currency.Currencies;
-import net.chmilevfa.telegram.bots.currency.states.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import java.util.Objects;
  * @since 09.07.18
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class InMemoryData {
+class InMemoryData {
 
     private Map<Integer, String> languages = new HashMap<>();
 
@@ -34,21 +34,21 @@ public class InMemoryData {
     /** TODO what for? */
     private Map<Long, Currencies> firstUserCurrency = new HashMap<>();
 
-    public void saveState(Integer userId, Long chatId, MessageState state) {
+    void saveState(Integer userId, Long chatId, MessageState state) {
         DialogId dialogId = new DialogId(userId, chatId);
         states.put(dialogId, state);
     }
 
-    public MessageState getMessageState(Integer userId, Long chatId) {
+    MessageState getMessageState(Integer userId, Long chatId) {
         DialogId dialogId = new DialogId(userId, chatId);
         return states.getOrDefault(dialogId, MessageState.MAIN_MENU);
     }
 
-    public void saveFirstUserCurrency(Long chatId, Currencies currency) {
+    void saveFirstUserCurrency(Long chatId, Currencies currency) {
         firstUserCurrency.put(chatId, currency);
     }
 
-    public Currencies getFirstUserCurrency(Long chatId) {
+    Currencies getFirstUserCurrency(Long chatId) {
         return firstUserCurrency.remove(chatId);
     }
 

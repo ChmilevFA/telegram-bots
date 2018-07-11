@@ -1,6 +1,11 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
+import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -13,10 +18,12 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.*;
  * @author chmilevfa
  * @since 09.07.18
  */
+@Component
 public final class DefaultStateHandler implements StateHandler {
 
-    private final JsonFileDao dao;
+    private final Dao dao;
 
+    @Autowired
     public DefaultStateHandler(JsonFileDao dao) {
         this.dao = dao;
     }

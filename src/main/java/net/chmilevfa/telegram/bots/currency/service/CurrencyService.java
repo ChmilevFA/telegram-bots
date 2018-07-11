@@ -3,6 +3,7 @@ package net.chmilevfa.telegram.bots.currency.service;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.chmilevfa.telegram.bots.currency.Currencies;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,9 +17,11 @@ import java.net.URL;
  * @author chmilevfa
  * @since 07.07.18
  */
+@Service
 public class CurrencyService {
 
-    private final static String CURRENCY_CONVERTER_URL = "https://free.currencyconverterapi.com/api/v5/convert?q=%s&compact=y";
+    private final static String CURRENCY_CONVERTER_URL =
+            "https://free.currencyconverterapi.com/api/v5/convert?q=%s&compact=y";
 
     /**
      * Get rate using pair of currencies.

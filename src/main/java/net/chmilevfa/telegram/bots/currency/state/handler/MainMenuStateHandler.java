@@ -1,7 +1,12 @@
-package net.chmilevfa.telegram.bots.currency.states;
+package net.chmilevfa.telegram.bots.currency.state.handler;
 
+import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -18,15 +23,15 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.*;
  * @author chmilevfa
  * @since 09.07.18
  */
+@Component
 public final class MainMenuStateHandler extends AbstractCurrencyStateHandler implements StateHandler {
 
-    //TODO move to DI should be singleton
-    private static final StateHandler DEFAULT_STATE_HANDLER = new DefaultStateHandler(JsonFileDao.getInstance());
+    private final StateHandler defaultStateHandler;
+    private final Dao dao;
 
-    //TODO move to DI should be singleton
-    private final JsonFileDao dao;
-
-    public MainMenuStateHandler(JsonFileDao dao) {
+    @Autowired
+    public MainMenuStateHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+        this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
 
@@ -45,10 +50,10 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
                     messageToSend = onFeedbackChosen(message);
                     break;
                 default:
-                    messageToSend =  DEFAULT_STATE_HANDLER.getMessageToSend(message);
+                    messageToSend =  defaultStateHandler.getMessageToSend(message);
             }
         } else {
-            messageToSend =  DEFAULT_STATE_HANDLER.getMessageToSend(message);
+            messageToSend =  defaultStateHandler.getMessageToSend(message);
         }
         return messageToSend;
     }

@@ -2,9 +2,11 @@ package net.chmilevfa.telegram.bots.currency;
 
 import net.chmilevfa.telegram.BotConfig;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
-import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
 import net.chmilevfa.telegram.bots.currency.service.StringService;
-import net.chmilevfa.telegram.bots.currency.states.*;
+import net.chmilevfa.telegram.bots.currency.state.*;
+import net.chmilevfa.telegram.bots.currency.state.handler.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -13,19 +15,47 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import static net.chmilevfa.telegram.bots.currency.service.StringService.GO_TO_MAIN_MENU;
 
+/**
+ * Implements currency bot behaviour.
+ * Delegates handling particular behaviour of every possible bot
+ * state {@link MessageState} to implementations of {@link StateHandler}.
+ *
+ * @see MessageState
+ * @see StateHandler
+ *
+ * @author chmilevfa
+ * @since 08.07.18
+ */
+@Service("currencyBot")
 public class CurrencyBot extends TelegramLongPollingBot {
 
-    //TODO move to DI should be singleton
-    private static final StateHandler DEFAULT_STATE_HANDLER = new DefaultStateHandler(JsonFileDao.getInstance());
-    private static final StateHandler MAIN_MENU_STATE_HANDLER = new MainMenuStateHandler(JsonFileDao.getInstance());
-    private static final StateHandler FIRST_CURRENCY_HANDLER = new FirstCurrencyHandler(JsonFileDao.getInstance());
-    private static final StateHandler SECOND_CURRENCY_HANDLER =
-            new SecondCurrencyHandler(JsonFileDao.getInstance(), new CurrencyService());
-    private static final StateHandler SETTINGS_STATE_HANDLER = new SettingsStateHandler();
-    private static final StateHandler FEEDBACK_STATE_HANDLER = new FeedbackStateHandler(JsonFileDao.getInstance());
+    /** Handlers for all possible bot's states */
+    private final StateHandler defaultStateHandler;
+    private final StateHandler mainMenuStateHandler;
+    private final StateHandler firstCurrencyHandler;
+    private final StateHandler secondCurrencyHandler;
+    private final StateHandler settingsStateHandler;
+    private final StateHandler feedbackStateHandler;
 
-    //TODO move to DI should be singleton
-    private JsonFileDao dao = JsonFileDao.getInstance();
+    private final JsonFileDao dao;
+
+    @Autowired
+    public CurrencyBot(
+            StateHandler defaultStateHandler,
+            StateHandler mainMenuStateHandler,
+            StateHandler firstCurrencyHandler,
+            StateHandler secondCurrencyHandler,
+            StateHandler settingsStateHandler,
+            StateHandler feedbackStateHandler,
+            JsonFileDao dao) {
+        this.defaultStateHandler = defaultStateHandler;
+        this.mainMenuStateHandler = mainMenuStateHandler;
+        this.firstCurrencyHandler = firstCurrencyHandler;
+        this.secondCurrencyHandler = secondCurrencyHandler;
+        this.settingsStateHandler = settingsStateHandler;
+        this.feedbackStateHandler = feedbackStateHandler;
+        this.dao = dao;
+    }
 
     @Override
     public String getBotUsername() {
@@ -55,13 +85,13 @@ public class CurrencyBot extends TelegramLongPollingBot {
         SendMessage sendMessageRequest;
         switch (messageState) {
             case MAIN_MENU:
-                sendMessageRequest = MAIN_MENU_STATE_HANDLER.getMessageToSend(message);
+                sendMessageRequest = mainMenuStateHandler.getMessageToSend(message);
                 break;
             case CHOOSE_CURRENT_RATE_FIRST:
-                sendMessageRequest = FIRST_CURRENCY_HANDLER.getMessageToSend(message);
+                sendMessageRequest = firstCurrencyHandler.getMessageToSend(message);
                 break;
             case CHOOSE_CURRENT_RATE_SECOND:
-                sendMessageRequest = SECOND_CURRENCY_HANDLER.getMessageToSend(message);
+                sendMessageRequest = secondCurrencyHandler.getMessageToSend(message);
                 break;
             case FEEDBACK:
                 sendMessageRequest = handleFeedback(message);
@@ -69,7 +99,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             case SETTINGS:
             case DEFAULT:
             default:
-                sendMessageRequest = DEFAULT_STATE_HANDLER.getMessageToSend(message);
+                sendMessageRequest = defaultStateHandler.getMessageToSend(message);
         }
         execute(sendMessageRequest);
     }
@@ -81,14 +111,14 @@ public class CurrencyBot extends TelegramLongPollingBot {
         if (message.hasText()) {
             switch (message.getText()) {
                 case GO_TO_MAIN_MENU:
-                    sendMessageRequest = DEFAULT_STATE_HANDLER.getMessageToSend(message);
+                    sendMessageRequest = defaultStateHandler.getMessageToSend(message);
                     break;
                 default:
-                    sendMessageRequest = FEEDBACK_STATE_HANDLER.getMessageToSend(message);
+                    sendMessageRequest = feedbackStateHandler.getMessageToSend(message);
                     sendFeedbackToDeveloper(message);
             }
         } else {
-            sendMessageRequest = FEEDBACK_STATE_HANDLER.getMessageToSend(message);
+            sendMessageRequest = feedbackStateHandler.getMessageToSend(message);
             sendFeedbackToDeveloper(message);
         }
         return sendMessageRequest;
