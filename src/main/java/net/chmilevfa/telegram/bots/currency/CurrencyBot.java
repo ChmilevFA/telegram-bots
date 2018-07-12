@@ -5,6 +5,8 @@ import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.StringService;
 import net.chmilevfa.telegram.bots.currency.state.*;
 import net.chmilevfa.telegram.bots.currency.state.handler.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -28,6 +30,8 @@ import static net.chmilevfa.telegram.bots.currency.service.StringService.GO_TO_M
  */
 @Service("currencyBot")
 public class CurrencyBot extends TelegramLongPollingBot {
+
+    private static Logger logger = LoggerFactory.getLogger(CurrencyBot.class);
 
     /** Handlers for all possible bot's states */
     private final StateHandler defaultStateHandler;
@@ -73,8 +77,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             try {
                 handleIncomingMessage(update.getMessage()); // Call method to send the message
             } catch (TelegramApiException e) {
-                //TODO logger
-                e.printStackTrace();
+                logger.error("Error during handling telegram message", e);
             }
         }
     }

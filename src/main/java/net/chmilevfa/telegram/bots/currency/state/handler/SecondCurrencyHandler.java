@@ -7,6 +7,8 @@ import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
 import net.chmilevfa.telegram.bots.currency.service.StringService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -25,6 +27,8 @@ import java.util.Objects;
  */
 @Component
 public class SecondCurrencyHandler implements StateHandler {
+
+    private static Logger logger = LoggerFactory.getLogger(SecondCurrencyHandler.class);
 
     private final StateHandler defaultStateHandler;
     private final Dao dao;
@@ -56,8 +60,7 @@ public class SecondCurrencyHandler implements StateHandler {
         try {
             rate = currencyService.getRate(firstCurrency, secondCurrency);
         } catch (IOException e) {
-            //TODO log and handle
-            e.printStackTrace();
+            logger.error("Error during requesting currency rate", e);
         }
         String responseText = String.format(
                 StringService.CURRENCY_RATE, firstCurrency + "/" + secondCurrency, String.format("%.2f", rate));

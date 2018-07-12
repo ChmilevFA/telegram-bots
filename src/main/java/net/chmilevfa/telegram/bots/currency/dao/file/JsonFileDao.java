@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -18,8 +20,9 @@ import java.io.IOException;
 @Repository("dao")
 public class JsonFileDao implements Dao, AutoCloseable {
 
+    private static Logger logger = LoggerFactory.getLogger(JsonFileDao.class);
+
     private final static String FILE_NAME = "data.json";
-    private static volatile JsonFileDao instance;
 
     private InMemoryData data;
 
@@ -31,29 +34,12 @@ public class JsonFileDao implements Dao, AutoCloseable {
                 this.data = objectMapper.readValue(file, InMemoryData.class);
             }
         } catch (IOException e) {
-            //TODO log and handle
-            e.printStackTrace();
+            logger.error("Error during reading a file storage", e);
         }
         if (this.data == null) {
             data = new InMemoryData();
         }
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
-    }
-
-    /**
-     * Get Singleton instance
-     *
-     * @return instance of the class
-     */
-    public static JsonFileDao getInstance() {
-        if (instance == null) {
-            synchronized (JsonFileDao.class) {
-                if (instance == null) {
-                    instance = new JsonFileDao();
-                }
-            }
-        }
-        return instance;
     }
 
     @Override
@@ -82,8 +68,7 @@ public class JsonFileDao implements Dao, AutoCloseable {
         try {
             objectMapper.writeValue(new File(FILE_NAME), data);
         } catch (IOException e) {
-            //TODO log and handle
-            e.printStackTrace();
+            logger.error("Error during writing to a file storage", e);
         }
     }
 }

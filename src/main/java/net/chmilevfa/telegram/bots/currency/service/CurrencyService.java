@@ -3,6 +3,8 @@ package net.chmilevfa.telegram.bots.currency.service;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.chmilevfa.telegram.bots.currency.Currencies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -20,6 +22,8 @@ import java.net.URL;
 @Service
 public class CurrencyService {
 
+    private static Logger logger = LoggerFactory.getLogger(CurrencyService.class);
+
     private final static String CURRENCY_CONVERTER_URL =
             "https://free.currencyconverterapi.com/api/v5/convert?q=%s&compact=y";
 
@@ -36,6 +40,8 @@ public class CurrencyService {
         URL url = new URL(uri);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
+
+        logger.info("Requesting currency rate for {} pair. Request: {}", currencyArg, con.getURL());
 
         StringBuilder content = new StringBuilder();
         try (BufferedReader in = new BufferedReader(
