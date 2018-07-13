@@ -134,7 +134,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
                 String.format(
                         LocalisationService.getString("feedbackForDeveloper", language),
                         message.getFrom().getUserName()
-                ) + message.getText());
+                ) + System.lineSeparator() + message.getText());
         execute(sendMessage);
     }
 }

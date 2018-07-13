@@ -24,9 +24,11 @@ public final class FeedbackStateHandler implements StateHandler {
 
     private SendMessage onFeedbackSent(Message message, Language language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
-        String thanksFeedback = LocalisationService.getString("thanksFeedback", language);
-        String helloMessage = LocalisationService.getString("helloMessage", language);
+        String answer =
+                LocalisationService.getString("thanksFeedback", language) +
+                System.lineSeparator() + System.lineSeparator() +
+                LocalisationService.getString("helloMessage", language);
         return MessageUtils
-                .getSendMessageWithKeyboard(message, replyKeyboardMarkup, thanksFeedback + helloMessage);
+                .getSendMessageWithKeyboard(message, replyKeyboardMarkup, answer);
     }
 }
