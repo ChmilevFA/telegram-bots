@@ -1,5 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.state;
 
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
+import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -7,10 +9,6 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.chmilevfa.telegram.bots.currency.service.StringService.CURRENT_RATE;
-import static net.chmilevfa.telegram.bots.currency.service.StringService.FEEDBACK;
-import static net.chmilevfa.telegram.bots.currency.service.StringService.SETTINGS;
 
 /**
  * Collection of helper method for building bot's answers.
@@ -46,7 +44,7 @@ public final class MessageUtils {
      * TODO
      * @return
      */
-    public static ReplyKeyboardMarkup getMainMenuKeyboard() {
+    public static ReplyKeyboardMarkup getMainMenuKeyboard(Language language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -54,15 +52,15 @@ public final class MessageUtils {
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(CURRENT_RATE);
+        keyboardFirstRow.add(LocalisationService.getString("currentRate", language));
         keyboard.add(keyboardFirstRow);
 
         KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(SETTINGS);
+        keyboardSecondRow.add(LocalisationService.getString("settings", language));
         keyboard.add(keyboardSecondRow);
 
         KeyboardRow keyboardThirdRow = new KeyboardRow();
-        keyboardThirdRow.add(FEEDBACK);
+        keyboardThirdRow.add(LocalisationService.getString("feedback", language));
         keyboard.add(keyboardThirdRow);
 
         replyKeyboardMarkup.setKeyboard(keyboard);

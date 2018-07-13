@@ -4,7 +4,8 @@ import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
-import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
+import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
 import org.slf4j.Logger;
@@ -42,17 +43,17 @@ public class SecondCurrencyHandler implements StateHandler {
     }
 
     @Override
-    public SendMessage getMessageToSend(Message message) {
+    public SendMessage getMessageToSend(Message message, Language language) {
         if (message.hasText() && Currencies.containsByName(message.getText().trim())) {
-            return onCurrentRateChosen(message);
+            return onCurrentRateChosen(message, language);
         }
-        return defaultStateHandler.getMessageToSend(message);
+        return defaultStateHandler.getMessageToSend(message, language);
     }
 
-    private SendMessage onCurrentRateChosen(Message message) {
+    private SendMessage onCurrentRateChosen(Message message, Language language) {
         Currencies firstCurrency = dao.getFirstUserCurrency(message.getChatId());
         if (Objects.isNull(firstCurrency)) {
-            defaultStateHandler.getMessageToSend(message);
+            defaultStateHandler.getMessageToSend(message, language);
         }
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
         Currencies secondCurrency = Currencies.valueOf(message.getText().trim());
@@ -63,9 +64,11 @@ public class SecondCurrencyHandler implements StateHandler {
             logger.error("Error during requesting currency rate", e);
         }
         String responseText = String.format(
-                StringService.CURRENCY_RATE, firstCurrency + "/" + secondCurrency, String.format("%.2f", rate));
+                LocalisationService.getString("currencyRate", language),
+                firstCurrency + "/" + secondCurrency, String.format("%.2f", rate)
+        );
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard();
+        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
         return MessageUtils
                 .getSendMessageWithKeyboard(message, replyKeyboardMarkup, responseText);
     }

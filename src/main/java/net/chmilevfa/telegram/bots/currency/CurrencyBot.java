@@ -2,7 +2,8 @@ package net.chmilevfa.telegram.bots.currency;
 
 import net.chmilevfa.telegram.BotConfig;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
-import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
+import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.*;
 import net.chmilevfa.telegram.bots.currency.state.handler.*;
 import org.slf4j.Logger;
@@ -14,8 +15,6 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
-
-import static net.chmilevfa.telegram.bots.currency.service.StringService.GO_TO_MAIN_MENU;
 
 /**
  * Implements currency bot behaviour.
@@ -83,62 +82,59 @@ public class CurrencyBot extends TelegramLongPollingBot {
     }
 
     private void handleIncomingMessage(Message message) throws TelegramApiException {
-        MessageState messageState = getMessageState(message.getFrom().getId(), message.getChatId());
+        MessageState messageState = dao.getState(message.getFrom().getId(), message.getChatId());
+        Language language = dao.getLanguage(message.getFrom().getId());
 
         SendMessage sendMessageRequest;
         switch (messageState) {
             case MAIN_MENU:
-                sendMessageRequest = mainMenuStateHandler.getMessageToSend(message);
+                sendMessageRequest = mainMenuStateHandler.getMessageToSend(message, language);
                 break;
             case CHOOSE_CURRENT_RATE_FIRST:
-                sendMessageRequest = firstCurrencyHandler.getMessageToSend(message);
+                sendMessageRequest = firstCurrencyHandler.getMessageToSend(message, language);
                 break;
             case CHOOSE_CURRENT_RATE_SECOND:
-                sendMessageRequest = secondCurrencyHandler.getMessageToSend(message);
+                sendMessageRequest = secondCurrencyHandler.getMessageToSend(message, language);
                 break;
             case FEEDBACK:
-                sendMessageRequest = handleFeedback(message);
+                sendMessageRequest = handleFeedback(message, language);
                 break;
             case SETTINGS:
             case DEFAULT:
             default:
-                sendMessageRequest = defaultStateHandler.getMessageToSend(message);
+                sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);
         }
         execute(sendMessageRequest);
     }
 
-    private SendMessage handleFeedback(Message message) throws TelegramApiException {
+    private SendMessage handleFeedback(Message message, Language language) throws TelegramApiException {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
 
         SendMessage sendMessageRequest;
         if (message.hasText()) {
-            switch (message.getText()) {
-                case GO_TO_MAIN_MENU:
-                    sendMessageRequest = defaultStateHandler.getMessageToSend(message);
+            switch (UserAnswer.getTypeByString(message.getText(), language)) {
+                case MAIN_MENU:
+                    sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);
                     break;
                 default:
-                    sendMessageRequest = feedbackStateHandler.getMessageToSend(message);
-                    sendFeedbackToDeveloper(message);
+                    sendMessageRequest = feedbackStateHandler.getMessageToSend(message, language);
+                    sendFeedbackToDeveloper(message, language);
             }
         } else {
-            sendMessageRequest = feedbackStateHandler.getMessageToSend(message);
-            sendFeedbackToDeveloper(message);
+            sendMessageRequest = feedbackStateHandler.getMessageToSend(message, language);
+            sendFeedbackToDeveloper(message, language);
         }
         return sendMessageRequest;
     }
 
-    private void sendFeedbackToDeveloper(Message message) throws TelegramApiException {
+    private void sendFeedbackToDeveloper(Message message, Language language) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId((long) BotConfig.MASTER_ID);
         sendMessage.setText(
                 String.format(
-                        StringService.FEEDBACK_FOR_DEVELOPER,
+                        LocalisationService.getString("feedbackForDeveloper", language),
                         message.getFrom().getUserName()
                 ) + message.getText());
         execute(sendMessage);
-    }
-
-    private MessageState getMessageState(Integer userId, Long chatId) {
-        return dao.getState(userId, chatId);
     }
 }

@@ -3,6 +3,7 @@ package net.chmilevfa.telegram.bots.currency.dao.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,16 @@ public class JsonFileDao implements Dao, AutoCloseable {
             data = new InMemoryData();
         }
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    @Override
+    public void saveLanguage(Integer userId, Language language) {
+        data.saveLanguage(userId, language.getCode());
+    }
+
+    @Override
+    public Language getLanguage(Integer userId) {
+        return Language.getLanguageByCode(data.getLanguage(userId));
     }
 
     @Override

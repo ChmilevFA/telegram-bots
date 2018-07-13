@@ -1,5 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.state.handler;
 
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 
@@ -12,9 +13,10 @@ import org.telegram.telegrambots.api.objects.Message;
 public interface StateHandler {
 
     /**
-     * TODO
+     *
      * @param message
+     * @param language
      * @return
      */
-    SendMessage getMessageToSend(Message message);
+    SendMessage getMessageToSend(Message message, Language language);
 }

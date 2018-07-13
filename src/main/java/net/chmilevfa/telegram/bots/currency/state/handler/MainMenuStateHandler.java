@@ -2,9 +2,11 @@ package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
-import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
+import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
+import net.chmilevfa.telegram.bots.currency.state.UserAnswer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -13,8 +15,6 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.Collections;
-
-import static net.chmilevfa.telegram.bots.currency.service.StringService.*;
 
 /**
  * Implementation of {@link StateHandler} which deals with chosen buttons of
@@ -36,36 +36,37 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
     }
 
     @Override
-    public SendMessage getMessageToSend(Message message) {
+    public SendMessage getMessageToSend(Message message, Language language) {
         SendMessage messageToSend;
         if (message.hasText()) {
-            switch (message.getText()) {
+            switch (UserAnswer.getTypeByString(message.getText(), language)) {
                 case CURRENT_RATE:
-                    messageToSend = onCurrentRateChosen(message);
+                    messageToSend = onCurrentRateChosen(message, language);
                     break;
                 case SETTINGS:
-                    messageToSend = onSettingsChosen(message);
+                    messageToSend = onSettingsChosen(message, language);
                     break;
                 case FEEDBACK:
-                    messageToSend = onFeedbackChosen(message);
+                    messageToSend = onFeedbackChosen(message, language);
                     break;
                 default:
-                    messageToSend =  defaultStateHandler.getMessageToSend(message);
+                    messageToSend =  defaultStateHandler.getMessageToSend(message, language);
             }
         } else {
-            messageToSend =  defaultStateHandler.getMessageToSend(message);
+            messageToSend =  defaultStateHandler.getMessageToSend(message, language);
         }
         return messageToSend;
     }
 
-    private SendMessage onCurrentRateChosen(Message message) {
+    private SendMessage onCurrentRateChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.CHOOSE_CURRENT_RATE_FIRST);
-        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard();
-        return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup, CHOOSE_FIRST_CURRENCY);
+        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language);
+        return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
+                LocalisationService.getString("chooseFirstCurrency", language));
     }
 
     //TODO complete
-    private SendMessage onSettingsChosen(Message message) {
+    private SendMessage onSettingsChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.SETTINGS);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(message.getChatId());
@@ -74,13 +75,14 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         return sendMessage;
     }
 
-    private SendMessage onFeedbackChosen(Message message) {
+    private SendMessage onFeedbackChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.FEEDBACK);
-        ReplyKeyboardMarkup replyKeyboardMarkup = getFeedbackKeyboard();
-        return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup, WRITE_FEEDBACK);
+        ReplyKeyboardMarkup replyKeyboardMarkup = getFeedbackKeyboard(language);
+        return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
+                LocalisationService.getString("writeFeedback", language));
     }
 
-    private ReplyKeyboardMarkup getFeedbackKeyboard() {
+    private ReplyKeyboardMarkup getFeedbackKeyboard(Language language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         replyKeyboardMarkup.setSelective(true);
@@ -88,7 +90,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(StringService.GO_TO_MAIN_MENU);
+        keyboardRow.add(LocalisationService.getString("goToMainMenu", language));
 
         replyKeyboardMarkup.setKeyboard(Collections.singletonList(keyboardRow));
 

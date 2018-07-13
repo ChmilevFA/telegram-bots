@@ -1,7 +1,8 @@
 package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
-import net.chmilevfa.telegram.bots.currency.service.StringService;
+import net.chmilevfa.telegram.bots.currency.service.language.Language;
+import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -18,7 +19,7 @@ abstract class AbstractCurrencyStateHandler {
 
     private final static int NUMBER_ELEMENTS_IN_ROW = 2;
 
-    ReplyKeyboardMarkup getCurrenciesKeyboard() {
+    ReplyKeyboardMarkup getCurrenciesKeyboard(Language language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         replyKeyboardMarkup.setSelective(true);
@@ -42,7 +43,7 @@ abstract class AbstractCurrencyStateHandler {
             keyboardRow = new KeyboardRow();
         }
 
-        keyboardRow.add(StringService.GO_TO_MAIN_MENU);
+        keyboardRow.add(LocalisationService.getString("goToMainMenu", language));
         keyboardRows.add(keyboardRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);

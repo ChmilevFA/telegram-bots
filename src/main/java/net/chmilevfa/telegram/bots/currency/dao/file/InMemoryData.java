@@ -34,6 +34,14 @@ class InMemoryData {
     /** TODO what for? */
     private Map<Long, Currencies> firstUserCurrency = new HashMap<>();
 
+    void saveLanguage(Integer userId, String language) {
+        languages.put(userId, language);
+    }
+
+    String getLanguage(Integer userId) {
+        return languages.get(userId);
+    }
+
     void saveState(Integer userId, Long chatId, MessageState state) {
         DialogId dialogId = new DialogId(userId, chatId);
         states.put(dialogId, state);
@@ -66,6 +74,9 @@ class InMemoryData {
         return Objects.hash(languages, states);
     }
 
+    /**
+     * TODO
+     */
     private static class DialogId {
 
         private final static String SERIALIZATION_SEPARATOR = "_";
@@ -93,6 +104,9 @@ class InMemoryData {
         }
     }
 
+    /**
+     * TODO
+     */
     private static class DialogIdSerializer extends JsonSerializer<DialogId> {
         @Override
         public void serialize(DialogId value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -100,6 +114,9 @@ class InMemoryData {
         }
     }
 
+    /**
+     * TODO
+     */
     private static class DialogIdDeserializer extends KeyDeserializer {
         @Override
         public DialogId deserializeKey(String key, DeserializationContext ctxt) {
@@ -111,5 +128,4 @@ class InMemoryData {
             return new DialogId(userId, chatId);
         }
     }
-
 }
