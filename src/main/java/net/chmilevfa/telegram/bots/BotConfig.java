@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram;
+package net.chmilevfa.telegram.bots;
 
 //TODO probably it should be better to store it in properties files
 public class BotConfig {

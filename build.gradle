@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'net.chmilevfa.telegram'
+group 'net.chmilevfa.telegram.bots'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

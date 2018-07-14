@@ -1,4 +1,4 @@
-package net.chmilevfa.telegram;
+package net.chmilevfa.telegram.bots;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 11.07.18
  */
 @Configuration
-@ComponentScan("net.chmilevfa.telegram")
+@ComponentScan("net.chmilevfa.telegram.bots")
 public class AppConfig {
 
 }
