@@ -16,7 +16,8 @@ public enum MessageState {
     CHOOSE_CURRENT_RATE_FIRST(2),
     CHOOSE_CURRENT_RATE_SECOND(3),
     SETTINGS(4),
-    FEEDBACK(5);
+    LANGUAGES(5),
+    FEEDBACK(6);
 
     int code;
 

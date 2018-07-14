@@ -24,6 +24,7 @@ public class App {
         try {
             logger.info("Registering bots...");
             botsApi.registerBot(currencyBot);
+            logger.info("All bots registered");
         } catch (TelegramApiException e) {
             logger.error("Error during registering bots", e);
         }

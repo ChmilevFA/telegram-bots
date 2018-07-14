@@ -38,6 +38,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
     private final StateHandler firstCurrencyHandler;
     private final StateHandler secondCurrencyHandler;
     private final StateHandler settingsStateHandler;
+    private final StateHandler languagesStateHandler;
     private final StateHandler feedbackStateHandler;
 
     private final JsonFileDao dao;
@@ -49,6 +50,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             StateHandler firstCurrencyHandler,
             StateHandler secondCurrencyHandler,
             StateHandler settingsStateHandler,
+            StateHandler languagesStateHandler,
             StateHandler feedbackStateHandler,
             JsonFileDao dao) {
         this.defaultStateHandler = defaultStateHandler;
@@ -56,6 +58,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
         this.firstCurrencyHandler = firstCurrencyHandler;
         this.secondCurrencyHandler = secondCurrencyHandler;
         this.settingsStateHandler = settingsStateHandler;
+        this.languagesStateHandler = languagesStateHandler;
         this.feedbackStateHandler = feedbackStateHandler;
         this.dao = dao;
     }
@@ -100,6 +103,11 @@ public class CurrencyBot extends TelegramLongPollingBot {
                 sendMessageRequest = handleFeedback(message, language);
                 break;
             case SETTINGS:
+                sendMessageRequest = settingsStateHandler.getMessageToSend(message, language);
+                break;
+            case LANGUAGES:
+                sendMessageRequest = languagesStateHandler.getMessageToSend(message, language);
+                break;
             case DEFAULT:
             default:
                 sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);

@@ -15,9 +15,10 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
- * Implementation of {@link StateHandler} which deals with chosen buttons of
+ * Implementation of {@link StateHandler} which deals with user's answers in the
  * main menu. Buttons should be displayed by {@link DefaultStateHandler}.
  *
  * @author chmilevfa
@@ -65,14 +66,36 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
                 LocalisationService.getString("chooseFirstCurrency", language));
     }
 
-    //TODO complete
     private SendMessage onSettingsChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.SETTINGS);
+        ReplyKeyboardMarkup replyKeyboardMarkup = getSettingsKeyboard(language);
+
         SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setText("Not implemented yet");
+        if (replyKeyboardMarkup != null) {
+            sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        }
+        sendMessage.setText(LocalisationService.getString("chooseAnOption", language));
         return sendMessage;
+    }
+
+    private ReplyKeyboardMarkup getSettingsKeyboard(Language language) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+
+        KeyboardRow firstKeyboardRow = new KeyboardRow();
+        firstKeyboardRow.add(LocalisationService.getString("languages", language));
+
+        KeyboardRow secondKeyboardRow = new KeyboardRow();
+        secondKeyboardRow.add(LocalisationService.getString("goToMainMenu", language));
+
+        replyKeyboardMarkup.setKeyboard(List.of(firstKeyboardRow, secondKeyboardRow));
+
+        return replyKeyboardMarkup;
     }
 
     private SendMessage onFeedbackChosen(Message message, Language language) {

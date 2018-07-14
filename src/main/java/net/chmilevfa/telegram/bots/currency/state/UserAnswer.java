@@ -14,6 +14,7 @@ public enum UserAnswer {
     CURRENT_RATE("currentRate"),
     SETTINGS("settings"),
     FEEDBACK("feedback"),
+    LANGUAGES("languages"),
     UNKNOWN("");
 
     UserAnswer(String title) {
