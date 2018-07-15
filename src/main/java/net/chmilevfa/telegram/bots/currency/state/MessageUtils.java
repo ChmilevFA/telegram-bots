@@ -19,11 +19,13 @@ import java.util.List;
 public final class MessageUtils {
 
     /**
-     * TODO
-     * @param message
-     * @param replyKeyboardMarkup
-     * @param textMessage
-     * @return
+     * Creates message to be sent from bot based on incoming message,
+     * already configured keyboard and text of bot's answer.
+     *
+     * @param message incoming message
+     * @param replyKeyboardMarkup configured keyboard
+     * @param textMessage text of bot's answer
+     * @return message to be sent from bot
      */
     public static SendMessage getSendMessageWithKeyboard(
             Message message,
@@ -41,8 +43,9 @@ public final class MessageUtils {
     }
 
     /**
-     * TODO
-     * @return
+     * Creates and returns telegram keyboard which describes bot's main menu.
+     *
+     * @return main menu keyboard
      */
     public static ReplyKeyboardMarkup getMainMenuKeyboard(Language language, LocalisationService localisationService) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();

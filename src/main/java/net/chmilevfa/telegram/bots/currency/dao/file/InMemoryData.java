@@ -31,7 +31,7 @@ class InMemoryData {
     @JsonDeserialize(keyUsing = DialogIdDeserializer.class)
     private Map<DialogId, MessageState> states = new HashMap<>();
 
-    /** TODO what for? */
+    /** Uses to store first currency from pair to be asked for rate. */
     private Map<Long, Currencies> firstUserCurrency = new HashMap<>();
 
     void saveLanguage(Integer userId, String language) {
@@ -76,7 +76,7 @@ class InMemoryData {
     }
 
     /**
-     * TODO
+     * Describes ID based on user and chat identifiers.
      */
     private static class DialogId {
 
@@ -106,7 +106,7 @@ class InMemoryData {
     }
 
     /**
-     * TODO
+     * Custom serializer for {@link DialogId}.
      */
     private static class DialogIdSerializer extends JsonSerializer<DialogId> {
         @Override
@@ -116,7 +116,7 @@ class InMemoryData {
     }
 
     /**
-     * TODO
+     * Custom deserializer for {@link DialogId}.
      */
     private static class DialogIdDeserializer extends KeyDeserializer {
         @Override

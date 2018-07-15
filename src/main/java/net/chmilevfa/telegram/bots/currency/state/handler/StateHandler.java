@@ -13,10 +13,11 @@ import org.telegram.telegrambots.api.objects.Message;
 public interface StateHandler {
 
     /**
+     * Creates bot's answer based on incoming message and user's language.
      *
-     * @param message
-     * @param language
-     * @return
+     * @param message incoming message
+     * @param language user's language
+     * @return bot's answer
      */
     SendMessage getMessageToSend(Message message, Language language);
 }

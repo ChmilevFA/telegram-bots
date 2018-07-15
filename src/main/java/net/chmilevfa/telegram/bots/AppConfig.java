@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * TODO description
+ * Spring application configuration.
  *
  * @author chmilevfa
  * @since 11.07.18
