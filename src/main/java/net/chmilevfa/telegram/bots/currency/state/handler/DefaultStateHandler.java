@@ -1,7 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
-import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
@@ -21,17 +20,19 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 @Component
 public final class DefaultStateHandler implements StateHandler {
 
+    private LocalisationService localisationService;
     private final Dao dao;
 
     @Autowired
-    public DefaultStateHandler(JsonFileDao dao) {
+    public DefaultStateHandler(LocalisationService localisationService, Dao dao) {
+        this.localisationService = localisationService;
         this.dao = dao;
     }
 
     @Override
     public SendMessage getMessageToSend(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
-        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
+        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         return getDefaultSendMessage(message, replyKeyboardMarkup, language);
     }
 
@@ -39,6 +40,6 @@ public final class DefaultStateHandler implements StateHandler {
                                               ReplyKeyboardMarkup replyKeyboardMarkup,
                                               Language language) {
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
-                LocalisationService.getString("helloMessage", language));
+                localisationService.getString("helloMessage", language));
     }
 }

@@ -23,12 +23,12 @@ public enum UserAnswer {
 
     private String title;
 
-    public static UserAnswer getTypeByString(String text, Language language) {
+    public static UserAnswer getTypeByString(String text, Language language, LocalisationService localisationService) {
         for (UserAnswer answer : UserAnswer.values()) {
             if (answer.title.isEmpty()) {
                 continue;
             }
-            if (text.trim().startsWith(LocalisationService.getString(answer.title, language))) {
+            if (text.trim().startsWith(localisationService.getString(answer.title, language))) {
                 return answer;
             }
         }

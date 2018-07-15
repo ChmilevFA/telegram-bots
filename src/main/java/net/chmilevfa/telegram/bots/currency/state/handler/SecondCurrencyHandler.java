@@ -27,16 +27,22 @@ import java.util.Objects;
  * @since 10.07.18
  */
 @Component
-public class SecondCurrencyHandler implements StateHandler {
+public final class SecondCurrencyHandler implements StateHandler {
 
     private static Logger logger = LoggerFactory.getLogger(SecondCurrencyHandler.class);
 
+    private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;
     private final Dao dao;
     private final CurrencyService currencyService;
 
     @Autowired
-    public SecondCurrencyHandler(StateHandler defaultStateHandler, JsonFileDao dao, CurrencyService currencyService) {
+    public SecondCurrencyHandler(
+            LocalisationService localisationService,
+            StateHandler defaultStateHandler,
+            JsonFileDao dao,
+            CurrencyService currencyService) {
+        this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
         this.currencyService = currencyService;
@@ -64,11 +70,11 @@ public class SecondCurrencyHandler implements StateHandler {
             logger.error("Error during requesting currency rate", e);
         }
         String responseText = String.format(
-                LocalisationService.getString("currencyRate", language),
+                localisationService.getString("currencyRate", language),
                 firstCurrency + "/" + secondCurrency, String.format("%.2f", rate)
         );
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
+        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         return MessageUtils
                 .getSendMessageWithKeyboard(message, replyKeyboardMarkup, responseText);
     }

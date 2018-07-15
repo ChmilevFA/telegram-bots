@@ -19,6 +19,12 @@ abstract class AbstractCurrencyStateHandler {
 
     private final static int NUMBER_ELEMENTS_IN_ROW = 2;
 
+    LocalisationService localisationService;
+
+    public AbstractCurrencyStateHandler(LocalisationService localisationService) {
+        this.localisationService = localisationService;
+    }
+
     ReplyKeyboardMarkup getCurrenciesKeyboard(Language language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
@@ -43,7 +49,7 @@ abstract class AbstractCurrencyStateHandler {
             keyboardRow = new KeyboardRow();
         }
 
-        keyboardRow.add(LocalisationService.getString("goToMainMenu", language));
+        keyboardRow.add(localisationService.getString("goToMainMenu", language));
         keyboardRows.add(keyboardRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);

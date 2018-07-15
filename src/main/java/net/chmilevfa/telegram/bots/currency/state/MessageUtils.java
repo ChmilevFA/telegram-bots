@@ -44,26 +44,26 @@ public final class MessageUtils {
      * TODO
      * @return
      */
-    public static ReplyKeyboardMarkup getMainMenuKeyboard(Language language) {
+    public static ReplyKeyboardMarkup getMainMenuKeyboard(Language language, LocalisationService localisationService) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(true);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(LocalisationService.getString("currentRate", language));
-        keyboard.add(keyboardFirstRow);
+        keyboardFirstRow.add(localisationService.getString("currentRate", language));
+        keyboardRows.add(keyboardFirstRow);
 
         KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(LocalisationService.getString("settings", language));
-        keyboard.add(keyboardSecondRow);
+        keyboardSecondRow.add(localisationService.getString("settings", language));
+        keyboardRows.add(keyboardSecondRow);
 
         KeyboardRow keyboardThirdRow = new KeyboardRow();
-        keyboardThirdRow.add(LocalisationService.getString("feedback", language));
-        keyboard.add(keyboardThirdRow);
+        keyboardThirdRow.add(localisationService.getString("feedback", language));
+        keyboardRows.add(keyboardThirdRow);
 
-        replyKeyboardMarkup.setKeyboard(keyboard);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         return replyKeyboardMarkup;
     }

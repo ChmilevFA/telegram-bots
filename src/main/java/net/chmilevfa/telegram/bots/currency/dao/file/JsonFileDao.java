@@ -30,6 +30,7 @@ public class JsonFileDao implements Dao, AutoCloseable {
     private JsonFileDao() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
+            logger.info("Reading data from file {}", FILE_NAME);
             File file = new File(FILE_NAME);
             if(file.exists() && !file.isDirectory()) {
                 this.data = objectMapper.readValue(file, InMemoryData.class);
@@ -55,7 +56,7 @@ public class JsonFileDao implements Dao, AutoCloseable {
 
     @Override
     public void saveMessageState(Integer userId, Long chatId, MessageState state) {
-        data.saveState(userId, chatId, state);
+        data.saveMessageState(userId, chatId, state);
     }
 
     @Override
@@ -79,7 +80,9 @@ public class JsonFileDao implements Dao, AutoCloseable {
         try {
             objectMapper.writeValue(new File(FILE_NAME), data);
         } catch (IOException e) {
-            logger.error("Error during writing to a file storage", e);
+            logger.error("Error during writing data to a file storage", e);
+            logger.error("Failed to write data: {}", data);
         }
+        logger.info("Data writing to file succeed");
     }
 }

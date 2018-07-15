@@ -2,7 +2,6 @@ package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
-import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
@@ -26,7 +25,12 @@ public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler imp
     private final Dao dao;
 
     @Autowired
-    public FirstCurrencyHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+    public FirstCurrencyHandler(
+            LocalisationService localisationService,
+            StateHandler defaultStateHandler,
+            Dao dao
+    ) {
+        super(localisationService);
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
@@ -44,6 +48,6 @@ public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler imp
         dao.saveFirstUserCurrency(message.getChatId(), Currencies.valueOf(message.getText().trim()));
         ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language);
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
-                LocalisationService.getString("chooseSecondCurrency", language));
+                localisationService.getString("chooseSecondCurrency", language));
     }
 }

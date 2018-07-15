@@ -42,7 +42,7 @@ class InMemoryData {
         return languages.get(userId);
     }
 
-    void saveState(Integer userId, Long chatId, MessageState state) {
+    void saveMessageState(Integer userId, Long chatId, MessageState state) {
         DialogId dialogId = new DialogId(userId, chatId);
         states.put(dialogId, state);
     }
@@ -66,12 +66,13 @@ class InMemoryData {
         if (o == null || getClass() != o.getClass()) return false;
         InMemoryData that = (InMemoryData) o;
         return Objects.equals(languages, that.languages) &&
-                Objects.equals(states, that.states);
+                Objects.equals(states, that.states) &&
+                Objects.equals(firstUserCurrency, that.firstUserCurrency);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(languages, states);
+        return Objects.hash(languages, states, firstUserCurrency);
     }
 
     /**

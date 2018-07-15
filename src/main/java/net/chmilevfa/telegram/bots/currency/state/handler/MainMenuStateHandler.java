@@ -31,7 +31,12 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
     private final Dao dao;
 
     @Autowired
-    public MainMenuStateHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+    public MainMenuStateHandler(
+            LocalisationService localisationService,
+            StateHandler defaultStateHandler,
+            JsonFileDao dao
+    ) {
+        super(localisationService);
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
@@ -40,7 +45,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
     public SendMessage getMessageToSend(Message message, Language language) {
         SendMessage messageToSend;
         if (message.hasText()) {
-            switch (UserAnswer.getTypeByString(message.getText(), language)) {
+            switch (UserAnswer.getTypeByString(message.getText(), language, localisationService)) {
                 case CURRENT_RATE:
                     messageToSend = onCurrentRateChosen(message, language);
                     break;
@@ -63,7 +68,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.CHOOSE_CURRENT_RATE_FIRST);
         ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language);
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
-                LocalisationService.getString("chooseFirstCurrency", language));
+                localisationService.getString("chooseFirstCurrency", language));
     }
 
     private SendMessage onSettingsChosen(Message message, Language language) {
@@ -77,7 +82,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         if (replyKeyboardMarkup != null) {
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
         }
-        sendMessage.setText(LocalisationService.getString("chooseAnOption", language));
+        sendMessage.setText(localisationService.getString("chooseAnOption", language));
         return sendMessage;
     }
 
@@ -88,10 +93,10 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         replyKeyboardMarkup.setResizeKeyboard(true);
 
         KeyboardRow firstKeyboardRow = new KeyboardRow();
-        firstKeyboardRow.add(LocalisationService.getString("languages", language));
+        firstKeyboardRow.add(localisationService.getString("languages", language));
 
         KeyboardRow secondKeyboardRow = new KeyboardRow();
-        secondKeyboardRow.add(LocalisationService.getString("goToMainMenu", language));
+        secondKeyboardRow.add(localisationService.getString("goToMainMenu", language));
 
         replyKeyboardMarkup.setKeyboard(List.of(firstKeyboardRow, secondKeyboardRow));
 
@@ -102,7 +107,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.FEEDBACK);
         ReplyKeyboardMarkup replyKeyboardMarkup = getFeedbackKeyboard(language);
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
-                LocalisationService.getString("writeFeedback", language));
+                localisationService.getString("writeFeedback", language));
     }
 
     private ReplyKeyboardMarkup getFeedbackKeyboard(Language language) {
@@ -113,7 +118,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
         replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(LocalisationService.getString("goToMainMenu", language));
+        keyboardRow.add(localisationService.getString("goToMainMenu", language));
 
         replyKeyboardMarkup.setKeyboard(Collections.singletonList(keyboardRow));
 

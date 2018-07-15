@@ -32,6 +32,8 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private static Logger logger = LoggerFactory.getLogger(CurrencyBot.class);
 
+    private final LocalisationService localisationService;
+
     /** Handlers for all possible bot's states */
     private final StateHandler defaultStateHandler;
     private final StateHandler mainMenuStateHandler;
@@ -45,6 +47,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     @Autowired
     public CurrencyBot(
+            LocalisationService localisationService,
             StateHandler defaultStateHandler,
             StateHandler mainMenuStateHandler,
             StateHandler firstCurrencyHandler,
@@ -53,6 +56,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             StateHandler languagesStateHandler,
             StateHandler feedbackStateHandler,
             JsonFileDao dao) {
+        this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.mainMenuStateHandler = mainMenuStateHandler;
         this.firstCurrencyHandler = firstCurrencyHandler;
@@ -120,7 +124,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
         SendMessage sendMessageRequest;
         if (message.hasText()) {
-            switch (UserAnswer.getTypeByString(message.getText(), language)) {
+            switch (UserAnswer.getTypeByString(message.getText(), language, localisationService)) {
                 case MAIN_MENU:
                     sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);
                     break;
@@ -140,7 +144,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
         sendMessage.setChatId((long) BotConfig.MASTER_ID);
         sendMessage.setText(
                 String.format(
-                        LocalisationService.getString("feedbackForDeveloper", language),
+                        localisationService.getString("feedbackForDeveloper", language),
                         message.getFrom().getUserName()
                 ) + System.lineSeparator() + message.getText());
         execute(sendMessage);

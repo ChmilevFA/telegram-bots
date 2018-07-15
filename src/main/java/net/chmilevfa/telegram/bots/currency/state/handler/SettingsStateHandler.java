@@ -25,15 +25,20 @@ import java.util.List;
  * @since 10.07.18
  */
 @Component
-public class SettingsStateHandler implements StateHandler {
+public final class SettingsStateHandler implements StateHandler {
 
     private static Logger logger = LoggerFactory.getLogger(SettingsStateHandler.class);
 
+    private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
     @Autowired
-    public SettingsStateHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+    public SettingsStateHandler(
+            LocalisationService localisationService,
+            StateHandler defaultStateHandler,
+            JsonFileDao dao) {
+        this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
@@ -47,7 +52,7 @@ public class SettingsStateHandler implements StateHandler {
             logger.trace("Received message: \"{}\" from userId: {} from chatId: {}",
                     messageText, message.getFrom().getId(), message.getChatId());
 
-            switch (UserAnswer.getTypeByString(messageText, language)) {
+            switch (UserAnswer.getTypeByString(messageText, language, localisationService)) {
                 case LANGUAGES:
                     messageToSend = onLanguagesChosen(message, language);
                     break;
@@ -72,7 +77,7 @@ public class SettingsStateHandler implements StateHandler {
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
         }
         String replyText =
-                String.format(LocalisationService.getString("chooseLanguage", language), language.getName());
+                String.format(localisationService.getString("chooseLanguage", language), language.getName());
         sendMessage.setText(replyText);
         return sendMessage;
     }
@@ -92,7 +97,7 @@ public class SettingsStateHandler implements StateHandler {
         }
 
         KeyboardRow currentRow = new KeyboardRow();
-        currentRow.add(LocalisationService.getString("goToMainMenu", language));
+        currentRow.add(localisationService.getString("goToMainMenu", language));
         keyboardRows.add(currentRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);

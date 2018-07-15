@@ -17,17 +17,23 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 @Component
 public final class FeedbackStateHandler implements StateHandler {
 
+    private LocalisationService localisationService;
+
+    public FeedbackStateHandler(LocalisationService localisationService) {
+        this.localisationService = localisationService;
+    }
+
     @Override
     public SendMessage getMessageToSend(Message message, Language language) {
         return onFeedbackSent(message, language);
     }
 
     private SendMessage onFeedbackSent(Message message, Language language) {
-        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
+        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         String answer =
-                LocalisationService.getString("thanksFeedback", language) +
+                localisationService.getString("thanksFeedback", language) +
                 System.lineSeparator() + System.lineSeparator() +
-                LocalisationService.getString("helloMessage", language);
+                localisationService.getString("helloMessage", language);
         return MessageUtils
                 .getSendMessageWithKeyboard(message, replyKeyboardMarkup, answer);
     }

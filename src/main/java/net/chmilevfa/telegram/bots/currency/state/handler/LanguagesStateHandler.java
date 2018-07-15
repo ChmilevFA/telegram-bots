@@ -22,15 +22,20 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
  * @since 14.07.18
  */
 @Component
-public class LanguagesStateHandler implements StateHandler {
+public final class LanguagesStateHandler implements StateHandler {
 
     private static Logger logger = LoggerFactory.getLogger(LanguagesStateHandler.class);
 
+    private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
     @Autowired
-    public LanguagesStateHandler(StateHandler defaultStateHandler, JsonFileDao dao) {
+    public LanguagesStateHandler(
+            LocalisationService localisationService,
+            StateHandler defaultStateHandler,
+            JsonFileDao dao) {
+        this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;
     }
@@ -55,11 +60,11 @@ public class LanguagesStateHandler implements StateHandler {
         dao.saveLanguage(message.getFrom().getId(), language);
 
         String responseText = String.format(
-                LocalisationService.getString("languageChosen", language),
+                localisationService.getString("languageChosen", language),
                 language.getName()
         );
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language);
+        ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         return MessageUtils
                 .getSendMessageWithKeyboard(message, replyKeyboardMarkup, responseText);
     }
