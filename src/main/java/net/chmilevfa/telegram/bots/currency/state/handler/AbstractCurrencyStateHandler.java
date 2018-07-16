@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common for Currency implementations of {@link StateHandler}.
+ * Common class for Currency implementations of {@link StateHandler}.
  *
  * @author chmilevfa
  * @since 10.07.18

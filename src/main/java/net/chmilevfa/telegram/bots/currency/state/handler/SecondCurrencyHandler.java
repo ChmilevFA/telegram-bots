@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Implementation of {@link StateHandler} which deals with second chosen currency.
- * Shows actual currency and shows main menu.
+ * An implementation of {@link StateHandler} which deals with second chosen currency.
+ * Shows up-to-date currency rate and shows main menu.
  *
  * @author chmilevfa
  * @since 10.07.18

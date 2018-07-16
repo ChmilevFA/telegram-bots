@@ -5,7 +5,7 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 
 /**
- * Basic interface for all state handler for dealing with users answers.
+ * Basic interface for all state handlers that deal with users answers.
  *
  * @author chmilevfa
  * @since 09.07.18

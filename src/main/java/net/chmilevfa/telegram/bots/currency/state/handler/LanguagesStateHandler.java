@@ -15,7 +15,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 /**
- * Implementation of {@link StateHandler} which deals with user's answers in the
+ * An implementation of {@link StateHandler} which deals with user's answers in the
  * language menu. Switches user language settings if correct {@link Language} was chosen.
  *
  * @author chmilevfa

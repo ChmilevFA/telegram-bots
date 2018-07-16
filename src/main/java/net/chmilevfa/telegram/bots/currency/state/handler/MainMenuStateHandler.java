@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link StateHandler} which deals with user's answers in the
+ * An implementation of {@link StateHandler} which deals with user's answers in the
  * main menu. Buttons should be displayed by {@link DefaultStateHandler}.
  *
  * @author chmilevfa

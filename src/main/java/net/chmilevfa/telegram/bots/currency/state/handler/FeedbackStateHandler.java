@@ -9,7 +9,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 /**
- * Feedback implementation of {@link StateHandler}. Just says user "Thank you" for feedback.
+ * Feedback implementation of {@link StateHandler}. Simply says "Thank you" for feedback.
  *
  * @author chmilevfa
  * @since 10.07.18

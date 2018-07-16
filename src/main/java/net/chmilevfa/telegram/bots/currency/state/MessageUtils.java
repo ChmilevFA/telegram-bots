@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Collection of helper method for building bot's answers.
+ * Collection of methods that help building bot's answers.
  *
  * @author chmilevfa
  * @since 10.07.18
@@ -19,8 +19,8 @@ import java.util.List;
 public final class MessageUtils {
 
     /**
-     * Creates message to be sent from bot based on incoming message,
-     * already configured keyboard and text of bot's answer.
+     * Based on incoming message, already configured keyboard and text of bot's answer,
+     * creates a message to be sent from bot.
      *
      * @param message incoming message
      * @param replyKeyboardMarkup configured keyboard

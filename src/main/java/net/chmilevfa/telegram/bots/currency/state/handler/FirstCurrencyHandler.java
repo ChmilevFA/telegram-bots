@@ -13,7 +13,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 /**
- * Implementation of {@link StateHandler} which deals with first chosen currency.
+ * An implementation of {@link StateHandler} which deals with first chosen currency.
  *
  * @author chmilevfa
  * @since 10.07.18

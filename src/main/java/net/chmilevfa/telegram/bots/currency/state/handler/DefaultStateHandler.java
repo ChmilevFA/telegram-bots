@@ -12,7 +12,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 /**
- * Default implementation of {@link StateHandler} which actually shows main menu keyboard.
+ * Default implementation of {@link StateHandler} which shows main menu keyboard.
  *
  * @author chmilevfa
  * @since 09.07.18

@@ -1,6 +1,6 @@
 package net.chmilevfa.telegram.bots;
 
-//TODO probably it should be better to store it in properties files
+//TODO probably it's better to store it in properties file
 public class BotConfig {
     public static String CURRENCY_BOT_TOKEN = "bot_token";
     public static String CURRENCY_BOT_NAME = "bot_name";
