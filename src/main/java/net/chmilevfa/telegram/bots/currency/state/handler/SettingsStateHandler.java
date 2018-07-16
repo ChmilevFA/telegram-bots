@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of {@link StateHandler} which deals with user's answers in the settings menu.
+ * An implementation of {@link StateHandler} which deals with user's answers in the settings menu.
  *
  * @author chmilevfa
  * @since 10.07.18

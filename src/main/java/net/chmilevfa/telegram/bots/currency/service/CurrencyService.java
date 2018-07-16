@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Service to get actual currency rate.
+ * Service for getting an up-to-date currency rate.
  *
  * @author chmilevfa
  * @since 07.07.18
@@ -28,10 +28,10 @@ public class CurrencyService {
             "https://free.currencyconverterapi.com/api/v5/convert?q=%s&compact=y";
 
     /**
-     * Get rate using pair of currencies.
+     * Get rate for pair of currencies.
      * @param from currency to convert from.
      * @param to currency to convert to.
-     * @return actual rate for from/to.
+     * @return current rate for from/to.
      */
     public float getRate(Currencies from, Currencies to) throws IOException {
         String currencyArg = from.name() + "_" + to.name();
