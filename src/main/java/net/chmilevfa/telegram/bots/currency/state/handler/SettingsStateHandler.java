@@ -1,7 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
-import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
@@ -37,7 +36,7 @@ public final class SettingsStateHandler implements StateHandler {
     public SettingsStateHandler(
             LocalisationService localisationService,
             StateHandler defaultStateHandler,
-            JsonFileDao dao) {
+            Dao dao) {
         this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.dao = dao;

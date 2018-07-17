@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +54,7 @@ public class FirstCurrencyHandlerTest {
     private Dao mockedDao;
     @Mock
     private LocalisationService mockedLocalisationService;
-    @Mock (answer = Answers.RETURNS_DEEP_STUBS)
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Message mockedMessage;
     @Mock
     private StateHandler mockedStateHandler;
@@ -101,5 +102,15 @@ public class FirstCurrencyHandlerTest {
         for (Currencies currency : Currencies.values()) {
             assertTrue(buttonsText.contains(currency.name()));
         }
+    }
+
+    @Test
+    public void testCallDefaultStateHandler() {
+        when(mockedMessage.hasText()).thenReturn(false);
+        Language actualLanguage = Language.ENGLISH;
+
+        underTestHandler.getMessageToSend(mockedMessage, actualLanguage);
+
+        verify(mockedStateHandler, times(1)).getMessageToSend(eq(mockedMessage), eq(actualLanguage));
     }
 }
