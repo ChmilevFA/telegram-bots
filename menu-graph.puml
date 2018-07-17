@@ -1,0 +1,43 @@
+http://plantuml.com/state-diagram
+@startuml
+scale 1000 width
+
+state "Main Menu" as MainMenu
+MainMenu : 1. Exchange rate
+MainMenu : 2. Settings
+MainMenu : 3. Leave feedback/Report a bug
+
+state "Current rate (First Currency)" as CurrentRateFirst
+CurrentRateFirst : 1..n. Choose first currency
+CurrentRateFirst : n+1. Back to main menu
+
+state "Current rate (Second Currency)" as CurrentRateSecond
+CurrentRateSecond : 1..n. Choose second currency
+CurrentRateSecond : n+1. Back to main menu
+
+state "Feedback/Bug report" as Feedback
+Feedback: 0. <Write and send text for feedback>
+Feedback: 1. Back to main menu
+
+state "Settings" as Settings
+Settings: 1. Languages
+Settings: 2. Back to main menu
+
+state "Languages" as Languages
+Languages: 1. English
+Languages: 2. Russian
+Languages: 3. Back to main menu
+
+MainMenu --> CurrentRateFirst : 1
+MainMenu --> Settings : 2
+MainMenu --> Feedback : 3
+
+CurrentRateFirst --> MainMenu : n+1
+CurrentRateFirst --> CurrentRateSecond : 1
+Settings --> MainMenu : 2
+Settings --> Languages : 1
+Feedback --> MainMenu : 0, 1
+Languages --> MainMenu : 1,2,3
+CurrentRateSecond --> MainMenu : n+1
+
+@enduml
