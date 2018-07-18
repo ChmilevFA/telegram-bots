@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Test for {@link CurrencyService}
  *
@@ -21,7 +23,7 @@ public class CurrencyServiceTest {
     }
 
     @Test
-    public void extractCurrencyRateTest() {
+    public void extractCurrencyRateTest() throws IOException {
         Float actualVal = underTest.extractCurrencyRate(testJsonRate, "USD_PHP");
         Assert.assertEquals(53.310001, actualVal, 0.00001);
     }
