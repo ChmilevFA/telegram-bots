@@ -1,7 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.service;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,11 @@ public class CurrencyService {
 
     private static Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
+    /** URL of exchange rate service */
     private final static String CURRENCY_CONVERTER_URL =
             "https://free.currencyconverterapi.com/api/v5/convert?q=%s&compact=y";
-
+    /** Mapper for reading JSON */
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     /**
      * Get rate for pair of currencies.
      * @param from currency to convert from.
@@ -56,8 +57,8 @@ public class CurrencyService {
         return extractCurrencyRate(content.toString(), currencyArg);
     }
 
-    float extractCurrencyRate(String data, String currencyArg) {
-        JsonObject jsonObject = new JsonParser().parse(data).getAsJsonObject();
-        return Float.parseFloat(jsonObject.getAsJsonObject(currencyArg).get("val").getAsString());
+    float extractCurrencyRate(String data, String currencyArg) throws IOException {
+        String textValue = MAPPER.readTree(data).at("/" + currencyArg + "/val").asText();
+        return Float.parseFloat(textValue);
     }
 }
