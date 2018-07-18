@@ -21,7 +21,7 @@ public enum UserAnswer {
         this.title = title;
     }
 
-    private String title;
+    private final String title;
 
     public static UserAnswer getTypeByString(String text, Language language, LocalisationService localisationService) {
         for (UserAnswer answer : UserAnswer.values()) {
