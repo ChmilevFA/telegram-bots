@@ -6,7 +6,6 @@ import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService
 import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
 import net.chmilevfa.telegram.bots.currency.state.UserAnswer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -29,7 +28,6 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
-    @Autowired
     public MainMenuStateHandler(
             LocalisationService localisationService,
             StateHandler defaultStateHandler,
