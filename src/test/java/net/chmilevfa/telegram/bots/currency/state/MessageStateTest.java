@@ -1,9 +1,10 @@
 package net.chmilevfa.telegram.bots.currency.state;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests for static methods of {@link MessageState}.
@@ -17,16 +18,16 @@ public class MessageStateTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testGetMessageStateByCorrectCode() {
+    public void getMessageStateByCorrectCode() {
         MessageState expectedState = MessageState.DEFAULT;
 
         MessageState actualState = MessageState.getMessageStateByCode(expectedState.getCode());
 
-        Assert.assertEquals(expectedState, actualState);
+        assertEquals(expectedState, actualState);
     }
 
     @Test
-    public void testExceptionWhenGetMessageStateByCode() {
+    public void exceptionWhenGetMessageStateByInvalidCode() {
         int wrongCode = Integer.MAX_VALUE;
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal code for parsing: " + wrongCode);

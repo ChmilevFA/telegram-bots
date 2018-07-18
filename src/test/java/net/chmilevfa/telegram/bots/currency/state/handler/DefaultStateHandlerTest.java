@@ -49,7 +49,7 @@ public class DefaultStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() {
+    public void validMessageToSend() {
         Integer expectedUserId = 42;
         Long expectedChatId = 123123123L;
         MessageState expectedMessageState  = MessageState.MAIN_MENU;

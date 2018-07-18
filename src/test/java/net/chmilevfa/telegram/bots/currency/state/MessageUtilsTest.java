@@ -2,7 +2,6 @@ package net.chmilevfa.telegram.bots.currency.state;
 
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -11,6 +10,7 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -30,7 +30,7 @@ public class MessageUtilsTest {
     private LocalisationService mockedLocalisationService;
 
     @Test
-    public void testGetSendMessageWithKeyboard() {
+    public void validSendMessageWithKeyboard() {
         Long expectedChatId = 123123123L;
         Integer expectedMessageId = 42;
         when(mockedMessage.getChatId()).thenReturn(expectedChatId);
@@ -41,15 +41,15 @@ public class MessageUtilsTest {
         SendMessage actualSendMessage =
                 MessageUtils.getSendMessageWithKeyboard(mockedMessage, expectedKeyboard, expectedTextMessage);
 
-        Assert.assertEquals(expectedChatId.toString(), actualSendMessage.getChatId());
-        Assert.assertEquals(expectedMessageId, actualSendMessage.getReplyToMessageId());
-        Assert.assertEquals(expectedKeyboard, actualSendMessage.getReplyMarkup());
-        Assert.assertEquals(expectedTextMessage, actualSendMessage.getText());
+        assertEquals(expectedChatId.toString(), actualSendMessage.getChatId());
+        assertEquals(expectedMessageId, actualSendMessage.getReplyToMessageId());
+        assertEquals(expectedKeyboard, actualSendMessage.getReplyMarkup());
+        assertEquals(expectedTextMessage, actualSendMessage.getText());
 
     }
 
     @Test
-    public void testGetMainMenuKeyboard() {
+    public void correctMainMenuKeyboard() {
         String expectedCurrentRate = "currentRate";
         String expectedSettings = "settings";
         String expectedFeedback = "feedback";
@@ -60,8 +60,8 @@ public class MessageUtilsTest {
         ReplyKeyboardMarkup actualKeyboard =
                 MessageUtils.getMainMenuKeyboard(Language.ENGLISH, mockedLocalisationService);
 
-        Assert.assertEquals(expectedCurrentRate, actualKeyboard.getKeyboard().get(0).get(0).getText());
-        Assert.assertEquals(expectedSettings, actualKeyboard.getKeyboard().get(1).get(0).getText());
-        Assert.assertEquals(expectedFeedback, actualKeyboard.getKeyboard().get(2).get(0).getText());
+        assertEquals(expectedCurrentRate, actualKeyboard.getKeyboard().get(0).get(0).getText());
+        assertEquals(expectedSettings, actualKeyboard.getKeyboard().get(1).get(0).getText());
+        assertEquals(expectedFeedback, actualKeyboard.getKeyboard().get(2).get(0).getText());
     }
 }

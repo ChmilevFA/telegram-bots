@@ -62,7 +62,7 @@ public class MainMenuStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSendForCurrentRate() {
+    public void validMessageToSendForCurrentRate() {
         String currentRate = "currentRate";
         Integer expectedUserId = 42;
         Long expectedChatId = 123123123L;
@@ -83,7 +83,7 @@ public class MainMenuStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSendForSettings() {
+    public void correctMessageToSendForSettings() {
         String settings = "settings";
         String expectedText = "chooseAnOption";
         String expectedLanguages = "languages";
@@ -123,7 +123,7 @@ public class MainMenuStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSendForFeedback() {
+    public void correctMessageToSendForFeedback() {
         String feedback = "feedback";
         String expectedText = "writeFeedback";
         String expectedMainMenu = "goToMainMenu";
@@ -160,7 +160,7 @@ public class MainMenuStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSendForUnknownUserAnswer() {
+    public void callDefaultStateHandlerWhenUnknownUserAnswer() {
         Language actualLanguage = Language.ENGLISH;
         when(mockedMessage.hasText()).thenReturn(true);
         when(mockedMessage.getText()).thenReturn("AnyUnknownText");
@@ -174,7 +174,7 @@ public class MainMenuStateHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandlerWhenNoText() {
+    public void callDefaultStateHandlerWhenNoText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language actualLanguage = Language.ENGLISH;
 

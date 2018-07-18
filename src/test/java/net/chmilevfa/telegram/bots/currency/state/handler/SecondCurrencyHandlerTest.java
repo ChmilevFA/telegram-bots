@@ -66,7 +66,7 @@ public class SecondCurrencyHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() throws IOException {
+    public void validMessageToSend() throws IOException {
         Currencies expectedFirstCurrency = Currencies.USD;
         Currencies expectedSecondCurrency = Currencies.EUR;
         Integer expectedUserId = 11111;
@@ -98,7 +98,7 @@ public class SecondCurrencyHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandlerWhenNoText() {
+    public void callDefaultStateHandlerWhenNoText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language actualLanguage = Language.ENGLISH;
 

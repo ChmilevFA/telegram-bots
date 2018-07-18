@@ -67,7 +67,7 @@ public class FirstCurrencyHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() {
+    public void validMessageToSend() {
         Integer expectedUserId = 42;
         Long expectedChatId = 123123123L;
         MessageState expectedMessageState  = MessageState.CHOOSE_CURRENT_RATE_SECOND;
@@ -105,7 +105,7 @@ public class FirstCurrencyHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandler() {
+    public void callDefaultStateHandlerWhenMessageDoesNotContainText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language actualLanguage = Language.ENGLISH;
 
