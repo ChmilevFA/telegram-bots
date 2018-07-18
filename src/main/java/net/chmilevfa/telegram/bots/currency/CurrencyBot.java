@@ -8,7 +8,6 @@ import net.chmilevfa.telegram.bots.currency.state.*;
 import net.chmilevfa.telegram.bots.currency.state.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -45,7 +44,6 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private final JsonFileDao dao;
 
-    @Autowired
     public CurrencyBot(
             LocalisationService localisationService,
             StateHandler defaultStateHandler,

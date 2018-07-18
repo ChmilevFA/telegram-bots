@@ -9,7 +9,6 @@ import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -35,7 +34,6 @@ public final class SecondCurrencyHandler implements StateHandler {
     private final Dao dao;
     private final CurrencyService currencyService;
 
-    @Autowired
     public SecondCurrencyHandler(
             LocalisationService localisationService,
             StateHandler defaultStateHandler,

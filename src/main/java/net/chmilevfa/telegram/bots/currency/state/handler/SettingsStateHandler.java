@@ -7,7 +7,6 @@ import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import net.chmilevfa.telegram.bots.currency.state.UserAnswer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -32,7 +31,6 @@ public final class SettingsStateHandler implements StateHandler {
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
-    @Autowired
     public SettingsStateHandler(
             LocalisationService localisationService,
             StateHandler defaultStateHandler,
