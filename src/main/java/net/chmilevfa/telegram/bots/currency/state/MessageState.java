@@ -19,7 +19,7 @@ public enum MessageState {
     LANGUAGES(5),
     FEEDBACK(6);
 
-    int code;
+    private final int code;
 
     MessageState(int code) {
         this.code = code;
