@@ -61,7 +61,7 @@ public class SettingsStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() {
+    public void validMessageToSend() {
         String userAnswer = "languages";
         Language expectedLanguage = Language.RUSSIAN;
         Integer expectedUserId = 111111;
@@ -103,7 +103,7 @@ public class SettingsStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSendWithUnrecognizedUserAnswer() {
+    public void callDefaultStateHandlerWhenUnrecognizedUserAnswer() {
         String wrongText = "qweqwe";
         Language expectedLanguage = Language.RUSSIAN;
         when(mockedMessage.hasText()).thenReturn(true);
@@ -119,7 +119,7 @@ public class SettingsStateHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandlerWhenNoText() {
+    public void callDefaultStateHandlerWhenNoText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language expectedLanguage = Language.RUSSIAN;
 

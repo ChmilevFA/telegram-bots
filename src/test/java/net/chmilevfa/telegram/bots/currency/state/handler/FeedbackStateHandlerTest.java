@@ -39,7 +39,7 @@ public class FeedbackStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() {
+    public void validMessageToSend() {
         Long expectedChatId = 123123123L;
         Integer expectedMessageId = 142;
         String expectedHelloMessage = "helloMessage";

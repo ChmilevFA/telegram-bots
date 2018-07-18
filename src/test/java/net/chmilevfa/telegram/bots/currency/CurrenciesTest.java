@@ -1,7 +1,8 @@
 package net.chmilevfa.telegram.bots.currency;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests for static methods of {@link Currencies}.
@@ -12,23 +13,23 @@ import org.junit.Test;
 public class CurrenciesTest {
 
     @Test
-    public void testTrueContainsByUpperCaseName() {
+    public void containsByUpperCaseNameFound() {
         String nameToCheck = Currencies.EUR.name().toUpperCase();
 
-        Assert.assertTrue(Currencies.containsByName(nameToCheck));
+        assertTrue(Currencies.containsByName(nameToCheck));
     }
 
     @Test
-    public void testTrueContainsByLowerCaseName() {
+    public void containsByLowerCaseNameFound() {
         String nameToCheck = Currencies.EUR.name().toLowerCase();
 
-        Assert.assertTrue(Currencies.containsByName(nameToCheck));
+        assertTrue(Currencies.containsByName(nameToCheck));
     }
 
     @Test
-    public void testFalseContainsByName() {
+    public void containsByNameNotFound() {
         String incorrectNameToCheck = "qweasdzxcasdqwe";
 
-        Assert.assertFalse(Currencies.containsByName(incorrectNameToCheck));
+        assertFalse(Currencies.containsByName(incorrectNameToCheck));
     }
 }

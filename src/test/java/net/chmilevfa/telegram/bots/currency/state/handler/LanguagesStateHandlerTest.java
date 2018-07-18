@@ -59,7 +59,7 @@ public class LanguagesStateHandlerTest {
     }
 
     @Test
-    public void testGetMessageToSend() {
+    public void validMessageToSend() {
         Integer expectedUserId = 42;
         Long expectedChatId = 123123123L;
         MessageState expectedMessageState  = MessageState.MAIN_MENU;
@@ -86,7 +86,7 @@ public class LanguagesStateHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandlerWhenNoText() {
+    public void callDefaultStateHandlerWhenMessageDoesNotContainText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language actualLanguage = Language.ENGLISH;
 
@@ -100,7 +100,7 @@ public class LanguagesStateHandlerTest {
     }
 
     @Test
-    public void testCallDefaultStateHandlerWithIncorrectText() {
+    public void callDefaultStateHandlerWhenMessageContainsIncorrectText() {
         when(mockedMessage.hasText()).thenReturn(true);
         when(mockedMessage.getText()).thenReturn("IncorrectText");
         when(mockedMessage.getFrom().getId()).thenReturn(123);
