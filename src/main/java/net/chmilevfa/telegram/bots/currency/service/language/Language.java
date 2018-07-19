@@ -1,5 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.service.language;
 
+import java.util.Arrays;
+
 /**
  * Currently supported languages.
  *
@@ -34,12 +36,8 @@ public enum Language {
      * @return returns true if supported language was found by parameter and false otherwise.
      */
     public static boolean isLanguageNameSupported(String name) {
-        for (Language language : Language.values()) {
-            if (language.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(Language.values())
+                .anyMatch(language -> language.getName().equals(name));
     }
 
     /**
@@ -50,12 +48,10 @@ public enum Language {
      * @return returns {@link Language} by passed string name
      */
     public static Language getLanguageByName(String name) {
-        for (Language language : Language.values()) {
-            if (language.getName().equals(name)) {
-                return language;
-            }
-        }
-        return ENGLISH;
+        return Arrays.stream(Language.values())
+                .filter(language -> language.getName().equals(name))
+                .findFirst()
+                .orElse(ENGLISH);
     }
 
     /**
@@ -66,11 +62,9 @@ public enum Language {
      * @return returns {@link Language} by passed string code
      */
     public static Language getLanguageByCode(String code) {
-        for (Language language : Language.values()) {
-            if (language.getCode().equals(code)) {
-                return language;
-            }
-        }
-        return ENGLISH;
+        return Arrays.stream(Language.values())
+                .filter(language -> language.getCode().equals(code))
+                .findFirst()
+                .orElse(ENGLISH);
     }
 }

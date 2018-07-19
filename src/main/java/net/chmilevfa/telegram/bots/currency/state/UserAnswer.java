@@ -3,6 +3,8 @@ package net.chmilevfa.telegram.bots.currency.state;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
 
+import java.util.Arrays;
+
 /**
  * Supported user answers on some of bot's states.
  *
@@ -24,14 +26,10 @@ public enum UserAnswer {
     private final String title;
 
     public static UserAnswer getTypeByString(String text, Language language, LocalisationService localisationService) {
-        for (UserAnswer answer : UserAnswer.values()) {
-            if (answer.title.isEmpty()) {
-                continue;
-            }
-            if (text.trim().startsWith(localisationService.getString(answer.title, language))) {
-                return answer;
-            }
-        }
-        return UNKNOWN;
+        return Arrays.stream(UserAnswer.values())
+                .filter(answer -> !answer.equals(UNKNOWN))
+                .filter(answer -> text.trim().startsWith(localisationService.getString(answer.title, language)))
+                .findFirst()
+                .orElse(UNKNOWN);
     }
 }

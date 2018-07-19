@@ -3,6 +3,8 @@ package net.chmilevfa.telegram.bots.currency.state;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.Arrays;
+
 /**
  * Supported states for user in menus.
  *
@@ -32,11 +34,9 @@ public enum MessageState {
 
     @JsonCreator
     public static MessageState getMessageStateByCode(int code) {
-        for (MessageState currentState : MessageState.values()) {
-            if (currentState.getCode() == code) {
-                return currentState;
-            }
-        }
-        throw new IllegalArgumentException("Illegal code for parsing: " + code);
+        return Arrays.stream(MessageState.values())
+                .filter(state -> state.getCode() == code)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Illegal code for parsing: " + code));
     }
 }
