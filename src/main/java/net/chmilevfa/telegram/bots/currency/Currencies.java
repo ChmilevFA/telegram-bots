@@ -1,5 +1,7 @@
 package net.chmilevfa.telegram.bots.currency;
 
+import java.util.Arrays;
+
 /**
  * Supported currencies.
  *
@@ -15,11 +17,7 @@ public enum Currencies {
     CZK;
 
     public static boolean containsByName(String name) {
-        for (Currencies currencyEnum : Currencies.values()) {
-            if (currencyEnum.name().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(Currencies.values())
+                .anyMatch(currency -> currency.name().equalsIgnoreCase(name));
     }
 }
