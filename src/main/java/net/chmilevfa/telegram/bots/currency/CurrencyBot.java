@@ -31,6 +31,8 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private static Logger logger = LoggerFactory.getLogger(CurrencyBot.class);
 
+    private final BotConfig config;
+
     private final LocalisationService localisationService;
 
     /** Handlers for all possible bot's states */
@@ -45,6 +47,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
     private final JsonFileDao dao;
 
     public CurrencyBot(
+            BotConfig config,
             LocalisationService localisationService,
             StateHandler defaultStateHandler,
             StateHandler mainMenuStateHandler,
@@ -54,6 +57,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             StateHandler languagesStateHandler,
             StateHandler feedbackStateHandler,
             JsonFileDao dao) {
+        this.config = config;
         this.localisationService = localisationService;
         this.defaultStateHandler = defaultStateHandler;
         this.mainMenuStateHandler = mainMenuStateHandler;
@@ -67,12 +71,12 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return BotConfig.CURRENCY_BOT_NAME;
+        return config.getCurrencyBotName();
     }
 
     @Override
     public String getBotToken() {
-        return BotConfig.CURRENCY_BOT_TOKEN;
+        return config.getCurrencyBotToken();
     }
 
     @Override
@@ -139,7 +143,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
 
     private void sendFeedbackToDeveloper(Message message, Language language) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId((long) BotConfig.MASTER_ID);
+        sendMessage.setChatId((long) config.getMasterUserId());
         sendMessage.setText(
                 String.format(
                         localisationService.getString("feedbackForDeveloper", language),

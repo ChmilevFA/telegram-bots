@@ -1,6 +1,13 @@
 package net.chmilevfa.telegram.bots;
 
-//TODO probably it's better to store it in properties file
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+
+@Component
+@PropertySource("classpath:application.properties")
 public class BotConfig {
     public static String CURRENCY_BOT_TOKEN = "bot_token";
     public static String CURRENCY_BOT_NAME = "bot_name";
