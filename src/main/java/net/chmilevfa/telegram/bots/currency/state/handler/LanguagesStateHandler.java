@@ -22,6 +22,8 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 @Component
 public final class LanguagesStateHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.LANGUAGES;
+
     private static Logger logger = LoggerFactory.getLogger(LanguagesStateHandler.class);
 
     private final LocalisationService localisationService;
@@ -50,6 +52,11 @@ public final class LanguagesStateHandler implements StateHandler {
             }
         }
         return defaultStateHandler.getMessageToSend(message, language);
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage onLanguageChosen(Message message, Language language) {

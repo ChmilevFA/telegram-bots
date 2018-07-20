@@ -25,6 +25,8 @@ import java.util.List;
 @Component
 public final class SettingsStateHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.SETTINGS;
+
     private static Logger logger = LoggerFactory.getLogger(SettingsStateHandler.class);
 
     private final LocalisationService localisationService;
@@ -60,6 +62,11 @@ public final class SettingsStateHandler implements StateHandler {
             messageToSend =  defaultStateHandler.getMessageToSend(message, language);
         }
         return messageToSend;
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage onLanguagesChosen(Message message, Language language) {

@@ -27,6 +27,8 @@ import java.util.Objects;
 @Component
 public final class SecondCurrencyHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.CHOOSE_CURRENT_RATE_SECOND;
+
     private static Logger logger = LoggerFactory.getLogger(SecondCurrencyHandler.class);
 
     private final LocalisationService localisationService;
@@ -51,6 +53,11 @@ public final class SecondCurrencyHandler implements StateHandler {
             return onCurrentRateChosen(message, language);
         }
         return defaultStateHandler.getMessageToSend(message, language);
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage onCurrentRateChosen(Message message, Language language) {

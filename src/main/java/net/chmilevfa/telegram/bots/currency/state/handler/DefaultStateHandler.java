@@ -19,6 +19,8 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 @Component
 public final class DefaultStateHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.DEFAULT;
+
     private LocalisationService localisationService;
     private final Dao dao;
 
@@ -32,6 +34,11 @@ public final class DefaultStateHandler implements StateHandler {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
         ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         return getDefaultSendMessage(message, replyKeyboardMarkup, language);
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage getDefaultSendMessage(Message message,
