@@ -144,11 +144,9 @@ public class CurrencyBot extends TelegramLongPollingBot {
     private void sendFeedbackToDeveloper(Message message, Language language) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId((long) config.getMasterUserId());
-        sendMessage.setText(
-                String.format(
-                        localisationService.getString("feedbackForDeveloper", language),
-                        message.getFrom().getUserName()
-                ) + System.lineSeparator() + message.getText());
+        sendMessage.setText(String.format(
+                localisationService.getString("feedbackForDeveloper", language),
+                message.getFrom().getUserName(), message.getText()));
         execute(sendMessage);
     }
 }

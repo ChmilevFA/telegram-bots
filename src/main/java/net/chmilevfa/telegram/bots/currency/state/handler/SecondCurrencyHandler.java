@@ -68,7 +68,7 @@ public final class SecondCurrencyHandler implements StateHandler {
         }
         String responseText = String.format(
                 localisationService.getString("currencyRate", language),
-                firstCurrency + "/" + secondCurrency, String.format("%.2f", rate)
+                firstCurrency, secondCurrency, String.format("%.2f", rate)
         );
 
         ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
