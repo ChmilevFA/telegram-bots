@@ -9,8 +9,26 @@ import java.util.Objects;
 @Component
 @PropertySource("classpath:application.properties")
 public class BotConfig {
-    public static String CURRENCY_BOT_TOKEN = "bot_token";
-    public static String CURRENCY_BOT_NAME = "bot_name";
 
-    public static int MASTER_ID = 12345; //<- id of bot's owner. Used to send feedback from users.
+    private final String currencyBotName;
+    private final String currencyBotToken;
+    private final Integer masterUserId;
+
+    public BotConfig(Environment env) {
+        this.currencyBotName = env.getProperty("bot.name");
+        this.currencyBotToken = env.getProperty("bot.token");
+        this.masterUserId = Integer.parseInt(Objects.requireNonNull(env.getProperty("master.user.id")));
+    }
+
+    public String getCurrencyBotName() {
+        return currencyBotName;
+    }
+
+    public String getCurrencyBotToken() {
+        return currencyBotToken;
+    }
+
+    public int getMasterUserId() {
+        return masterUserId;
+    }
 }
