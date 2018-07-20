@@ -74,9 +74,9 @@ public class SecondCurrencyHandlerTest {
         float expectedRate = 0.11f;
         MessageState expectedState = MessageState.MAIN_MENU;
         String baseCurrencyRate = "currencyRate";
-        String argCurrencyRate = baseCurrencyRate + " %s %s";
+        String argCurrencyRate = baseCurrencyRate + " %s %s %s";
         String expectedText = baseCurrencyRate + " " + expectedFirstCurrency +
-                "/" + expectedSecondCurrency + " " + expectedRate;
+                " " + expectedSecondCurrency + " " + expectedRate;
         when(mockedMessage.hasText()).thenReturn(true);
         when(mockedMessage.getText()).thenReturn(expectedSecondCurrency.name());
         when(mockedMessage.getChatId()).thenReturn(expectedChatId);
