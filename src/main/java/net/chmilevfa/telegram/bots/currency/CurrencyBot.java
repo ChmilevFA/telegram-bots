@@ -15,6 +15,8 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.util.List;
+
 /**
  * Implements currency bot behaviour.
  * Delegates handling particular behaviour of every possible bot
@@ -36,36 +38,18 @@ public class CurrencyBot extends TelegramLongPollingBot {
     private final LocalisationService localisationService;
 
     /** Handlers for all possible bot's states */
-    private final StateHandler defaultStateHandler;
-    private final StateHandler mainMenuStateHandler;
-    private final StateHandler firstCurrencyHandler;
-    private final StateHandler secondCurrencyHandler;
-    private final StateHandler settingsStateHandler;
-    private final StateHandler languagesStateHandler;
-    private final StateHandler feedbackStateHandler;
+    private final List<StateHandler> stateHandlers;
 
     private final JsonFileDao dao;
 
     public CurrencyBot(
             BotConfig config,
             LocalisationService localisationService,
-            StateHandler defaultStateHandler,
-            StateHandler mainMenuStateHandler,
-            StateHandler firstCurrencyHandler,
-            StateHandler secondCurrencyHandler,
-            StateHandler settingsStateHandler,
-            StateHandler languagesStateHandler,
-            StateHandler feedbackStateHandler,
+            List<StateHandler> stateHandlers,
             JsonFileDao dao) {
         this.config = config;
         this.localisationService = localisationService;
-        this.defaultStateHandler = defaultStateHandler;
-        this.mainMenuStateHandler = mainMenuStateHandler;
-        this.firstCurrencyHandler = firstCurrencyHandler;
-        this.secondCurrencyHandler = secondCurrencyHandler;
-        this.settingsStateHandler = settingsStateHandler;
-        this.languagesStateHandler = languagesStateHandler;
-        this.feedbackStateHandler = feedbackStateHandler;
+        this.stateHandlers = stateHandlers;
         this.dao = dao;
     }
 
@@ -94,31 +78,31 @@ public class CurrencyBot extends TelegramLongPollingBot {
         MessageState messageState = dao.getState(message.getFrom().getId(), message.getChatId());
         Language language = dao.getLanguage(message.getFrom().getId());
 
-        SendMessage sendMessageRequest;
-        switch (messageState) {
-            case MAIN_MENU:
-                sendMessageRequest = mainMenuStateHandler.getMessageToSend(message, language);
-                break;
-            case CHOOSE_CURRENT_RATE_FIRST:
-                sendMessageRequest = firstCurrencyHandler.getMessageToSend(message, language);
-                break;
-            case CHOOSE_CURRENT_RATE_SECOND:
-                sendMessageRequest = secondCurrencyHandler.getMessageToSend(message, language);
-                break;
-            case FEEDBACK:
-                sendMessageRequest = handleFeedback(message, language);
-                break;
-            case SETTINGS:
-                sendMessageRequest = settingsStateHandler.getMessageToSend(message, language);
-                break;
-            case LANGUAGES:
-                sendMessageRequest = languagesStateHandler.getMessageToSend(message, language);
-                break;
-            case DEFAULT:
-            default:
-                sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);
+        if (messageState.equals(MessageState.FEEDBACK)) {
+            execute(handleFeedback(message, language));
+            return;
         }
+
+        SendMessage sendMessageRequest = stateHandlers.stream()
+                .filter(handler -> handler.getProcessedMessageState().equals(messageState))
+                .findFirst()
+                .orElse(getDefaultHandler())
+                .getMessageToSend(message, language);
         execute(sendMessageRequest);
+    }
+
+    private StateHandler getDefaultHandler() {
+        return stateHandlers.stream()
+                .filter(handler -> handler.getProcessedMessageState().equals(MessageState.DEFAULT))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Unable to find handler for DEFAULT state"));
+    }
+
+    private StateHandler getFeedbackHandler() {
+        return stateHandlers.stream()
+                .filter(handler -> handler.getProcessedMessageState().equals(MessageState.FEEDBACK))
+                .findFirst()
+                .orElse(getDefaultHandler());
     }
 
     private SendMessage handleFeedback(Message message, Language language) throws TelegramApiException {
@@ -128,14 +112,14 @@ public class CurrencyBot extends TelegramLongPollingBot {
         if (message.hasText()) {
             switch (UserAnswer.getTypeByString(message.getText(), language, localisationService)) {
                 case MAIN_MENU:
-                    sendMessageRequest = defaultStateHandler.getMessageToSend(message, language);
+                    sendMessageRequest = getDefaultHandler().getMessageToSend(message, language);
                     break;
                 default:
-                    sendMessageRequest = feedbackStateHandler.getMessageToSend(message, language);
+                    sendMessageRequest = getFeedbackHandler().getMessageToSend(message, language);
                     sendFeedbackToDeveloper(message, language);
             }
         } else {
-            sendMessageRequest = feedbackStateHandler.getMessageToSend(message, language);
+            sendMessageRequest = getFeedbackHandler().getMessageToSend(message, language);
             sendFeedbackToDeveloper(message, language);
         }
         return sendMessageRequest;

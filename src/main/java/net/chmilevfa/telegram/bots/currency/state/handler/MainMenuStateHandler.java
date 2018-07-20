@@ -25,6 +25,8 @@ import java.util.List;
 @Component
 public final class MainMenuStateHandler extends AbstractCurrencyStateHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.MAIN_MENU;
+
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
@@ -59,6 +61,11 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
             messageToSend =  defaultStateHandler.getMessageToSend(message, language);
         }
         return messageToSend;
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage onCurrentRateChosen(Message message, Language language) {

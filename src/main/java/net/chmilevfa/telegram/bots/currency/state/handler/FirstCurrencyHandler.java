@@ -20,6 +20,8 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 @Component
 public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler implements StateHandler {
 
+    private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.CHOOSE_CURRENT_RATE_FIRST;
+
     private final StateHandler defaultStateHandler;
     private final Dao dao;
 
@@ -39,6 +41,11 @@ public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler imp
             return onCurrentRateChosen(message, language);
         }
         return defaultStateHandler.getMessageToSend(message, language);
+    }
+
+    @Override
+    public MessageState getProcessedMessageState() {
+        return PROCESSED_MESSAGE_STATE;
     }
 
     private SendMessage onCurrentRateChosen(Message message, Language language) {
