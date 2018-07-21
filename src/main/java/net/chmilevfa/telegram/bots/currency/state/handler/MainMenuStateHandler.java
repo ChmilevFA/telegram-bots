@@ -119,7 +119,6 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
 
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         KeyboardRow keyboardRow = new KeyboardRow();
         keyboardRow.add(localisationService.getString("goToMainMenu", language));

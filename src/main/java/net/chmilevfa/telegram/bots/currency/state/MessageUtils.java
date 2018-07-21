@@ -51,7 +51,6 @@ public final class MessageUtils {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
