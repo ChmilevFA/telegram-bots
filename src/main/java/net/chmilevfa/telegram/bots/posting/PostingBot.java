@@ -1,6 +1,5 @@
-package net.chmilevfa.telegram.bots.schedule.posting;
+package net.chmilevfa.telegram.bots.posting;
 
-import net.chmilevfa.telegram.bots.BotConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,14 +12,14 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
  * @author chmilevfa
  * @since 30.07.18
  */
-@Service("schedulePostsBot")
-public class SchedulePostsBot extends TelegramLongPollingBot {
+@Service("postingBot")
+public class PostingBot extends TelegramLongPollingBot {
 
-    private static Logger logger = LoggerFactory.getLogger(SchedulePostsBot.class);
+    private static Logger logger = LoggerFactory.getLogger(PostingBot.class);
 
-    private final BotConfig config;
+    private final PostingBotConfig config;
 
-    public SchedulePostsBot(BotConfig config) {
+    public PostingBot(PostingBotConfig config) {
         this.config = config;
     }
 
@@ -31,11 +30,11 @@ public class SchedulePostsBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return null;
+        return config.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return null;
+        return config.getBotToken();
     }
 }

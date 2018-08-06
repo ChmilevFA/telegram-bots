@@ -19,13 +19,13 @@ public class App {
 
         ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         TelegramLongPollingBot currencyBot = (TelegramLongPollingBot) context.getBean("currencyBot");
-        TelegramLongPollingBot schedulePostsBot = (TelegramLongPollingBot) context.getBean("schedulePostsBot");
+        TelegramLongPollingBot postingBot = (TelegramLongPollingBot) context.getBean("postingBot");
 
         TelegramBotsApi botsApi = new TelegramBotsApi();
         try {
             logger.info("Registering bots...");
             botsApi.registerBot(currencyBot);
-            botsApi.registerBot(schedulePostsBot);
+            botsApi.registerBot(postingBot);
             logger.info("All bots registered");
         } catch (TelegramApiException e) {
             logger.error("Error during registering bots", e);

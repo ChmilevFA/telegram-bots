@@ -1,5 +1,3 @@
-#Simple currency bot for telegram
-
 ##TODO:
 - Fill in current README with actual information 
 - Add smiles to replies and buttons
