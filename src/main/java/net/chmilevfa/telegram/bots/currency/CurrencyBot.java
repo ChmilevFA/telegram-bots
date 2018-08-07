@@ -1,6 +1,7 @@
 package net.chmilevfa.telegram.bots.currency;
 
 import net.chmilevfa.telegram.bots.BotConfig;
+import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.dao.file.JsonFileDao;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
@@ -40,7 +41,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
     /** Handlers for all possible bot's states */
     private final List<StateHandler> stateHandlers;
 
-    private final JsonFileDao dao;
+    private final Dao dao;
 
     public CurrencyBot(
             BotConfig config,
