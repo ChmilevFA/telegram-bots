@@ -1,6 +1,8 @@
 package net.chmilevfa.telegram.bots.posting.dao;
 
 import net.chmilevfa.telegram.bots.posting.state.PostingMessageState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,18 +16,24 @@ import java.util.Objects;
  */
 public class InMemoryPostingMessageStateDao implements PostingMessageStateDao {
 
+    //TODO Maybe Spring's aspects for implementations of DAOs would be better?
+    private static Logger logger = LoggerFactory.getLogger(InMemoryPostingMessageStateDao.class);
+
     private Map<DialogId, PostingMessageState> states = new HashMap<>();
 
     @Override
     public void saveMessageState(Integer userId, Long chatId, PostingMessageState state) {
         DialogId dialogId = new DialogId(userId, chatId);
         states.put(dialogId, state);
+        logger.trace("State {} for userId {} and chatId {} saved", state, userId, chatId);
     }
 
     @Override
     public PostingMessageState getState(Integer userId, Long chatId) {
         DialogId dialogId = new DialogId(userId, chatId);
-        return states.getOrDefault(dialogId, PostingMessageState.MAIN_MENU);
+        PostingMessageState result = states.getOrDefault(dialogId, PostingMessageState.MAIN_MENU);
+        logger.trace("State for userId {} and chatId {} retrieved: {}", userId, chatId, result);
+        return result;
     }
 
     /**

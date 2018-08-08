@@ -4,6 +4,7 @@ import net.chmilevfa.telegram.bots.posting.state.PostingMessageState;
 
 /**
  * DAO interface for objects of {@link PostingMessageState}.
+ * TODO make common generic DAO for message states
  *
  * @author chmilevfa
  * @since 08.08.18
