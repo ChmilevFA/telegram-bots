@@ -70,7 +70,7 @@ public class CurrencyBot extends TelegramLongPollingBot {
             try {
                 handleIncomingMessage(update.getMessage()); // Call method to send the message
             } catch (TelegramApiException e) {
-                logger.error("Error during handling telegram message", e);
+                logger.error("Error during handling telegram message from currency bot", e);
             }
         }
     }

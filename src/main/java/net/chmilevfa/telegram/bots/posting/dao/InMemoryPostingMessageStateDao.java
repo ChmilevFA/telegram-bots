@@ -3,6 +3,7 @@ package net.chmilevfa.telegram.bots.posting.dao;
 import net.chmilevfa.telegram.bots.posting.state.PostingMessageState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Objects;
  * @author chmilevfa
  * @since 08.08.18
  */
+@Repository
 public class InMemoryPostingMessageStateDao implements PostingMessageStateDao {
 
     //TODO Maybe Spring's aspects for implementations of DAOs would be better?
