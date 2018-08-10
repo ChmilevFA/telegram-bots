@@ -59,7 +59,7 @@ public final class DefaultStateHandler implements PostingStateHandler {
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add("Add new post and set up time for posting");
+        keyboardFirstRow.add("Add new post and set up time for posting"); //TODO move to localization service
         keyboardRows.add(keyboardFirstRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);
