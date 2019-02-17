@@ -98,6 +98,34 @@ public class SecondCurrencyHandlerTest {
     }
 
     @Test
+    public void errorMessageToSend() throws IOException {
+        Currencies expectedFirstCurrency = Currencies.USD;
+        Currencies expectedSecondCurrency = Currencies.EUR;
+        Integer expectedUserId = 11111;
+        Long expectedChatId = 333333L;
+        MessageState expectedState = MessageState.MAIN_MENU;
+        String expectedText = "currencyServiceError";
+        when(mockedMessage.hasText()).thenReturn(true);
+        when(mockedMessage.getText()).thenReturn(expectedSecondCurrency.name());
+        when(mockedMessage.getChatId()).thenReturn(expectedChatId);
+        when(mockedMessage.getFrom().getId()).thenReturn(expectedUserId);
+        when(mockedDao.getFirstUserCurrency(eq(expectedChatId))).thenReturn(expectedFirstCurrency);
+        when(mockedCurrencyService.getRate(any(), any())).thenThrow(new IOException("Imitating IOException from external service"));
+        when(mockedLocalisationService.getString(eq(expectedText), any())).thenReturn(expectedText);
+
+        SendMessage actualSendMessage = underTestHandler.getMessageToSend(mockedMessage, Language.ENGLISH);
+        verify(mockedDao).saveMessageState(userIdCaptor.capture(), chatIdCaptor.capture(), messageStateCaptor.capture());
+        verify(mockedCurrencyService).getRate(firstCurrencyCaptor.capture(), secondCurrencyCaptor.capture());
+
+        assertEquals(expectedUserId, userIdCaptor.getValue());
+        assertEquals(expectedChatId, chatIdCaptor.getValue());
+        assertEquals(expectedState, messageStateCaptor.getValue());
+        assertEquals(expectedFirstCurrency, firstCurrencyCaptor.getValue());
+        assertEquals(expectedSecondCurrency, secondCurrencyCaptor.getValue());
+        assertEquals(expectedText, actualSendMessage.getText());
+    }
+
+    @Test
     public void callDefaultStateHandlerWhenNoText() {
         when(mockedMessage.hasText()).thenReturn(false);
         Language actualLanguage = Language.ENGLISH;

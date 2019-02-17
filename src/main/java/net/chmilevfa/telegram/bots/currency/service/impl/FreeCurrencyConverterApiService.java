@@ -3,8 +3,10 @@ package net.chmilevfa.telegram.bots.currency.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
+import org.glassfish.jersey.internal.util.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -35,11 +37,8 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /** ApiKey for external service */
-    private static String apiKey;
-
-    public FreeCurrencyConverterApiService(Environment env) {
-        apiKey = env.getProperty("freecurrencyconverter.apiKey");
-    }
+    @Value("${freecurrencyconverter.apiKey}")
+    private String apiKey;
 
     /**
      * Get rate for pair of currencies.
@@ -50,28 +49,37 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
     @Override
     public float getRate(Currencies from, Currencies to) throws IOException {
         String currencyArg = from.name() + "_" + to.name();
+        return extractCurrencyRate(fetchExternalContent(currencyArg), currencyArg);
+    }
+
+    /**
+     *
+     * @param currencyArg currencies names joined by "_"
+     * @return content from external website
+     */
+    String fetchExternalContent(String currencyArg) throws IOException {
         String uri = String.format(CURRENCY_CONVERTER_URL, currencyArg, apiKey);
 
         URL url = new URL(uri);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
-        logger.info("Requesting currency rate for {} pair. Request: {}", currencyArg, con.getURL());
+        logger.info("Requesting currency rate for {} pair", currencyArg);
 
-        StringBuilder content = new StringBuilder();
+        StringBuilder contentBuilder = new StringBuilder();
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()))) {
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
+                contentBuilder.append(inputLine);
             }
         }
 
-        return extractCurrencyRate(content.toString(), currencyArg);
+        return contentBuilder.toString();
     }
 
-    private float extractCurrencyRate(String data, String currencyArg) throws IOException {
+    float extractCurrencyRate(String data, String currencyArg) throws IOException {
         String textValue = MAPPER.readTree(data).at("/" + currencyArg + "/val").asText();
         return Float.parseFloat(textValue);
     }
