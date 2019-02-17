@@ -1,4 +1,7 @@
 language: java
 jdk:
   - oraclejdk10
+before_script:
+  - mkdir -p src/main/resources
+  - echo 'freecurrencyconverter.apiKey=[apiKey]' >> src/main/resources/currencyservice.properties
 script: ./gradlew clean check

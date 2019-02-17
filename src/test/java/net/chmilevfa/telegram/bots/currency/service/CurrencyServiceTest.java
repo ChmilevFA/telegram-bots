@@ -1,8 +1,12 @@
 package net.chmilevfa.telegram.bots.currency.service;
 
+import net.chmilevfa.telegram.bots.AppConfig;
+import net.chmilevfa.telegram.bots.currency.Currencies;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
@@ -15,16 +19,24 @@ import java.io.IOException;
 public class CurrencyServiceTest {
 
     private CurrencyService underTest;
-    private final String testJsonRate = "{\"USD_PHP\":{\"val\":53.310001}}";
 
     @Before
-    public void init() {
-        underTest = new CurrencyService();
+    public void setUp() {
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        underTest = (CurrencyService) context.getBean("currencyService");
     }
 
     @Test
-    public void extractCurrencyRateTest() throws IOException {
-        Float actualVal = underTest.extractCurrencyRate(testJsonRate, "USD_PHP");
-        Assert.assertEquals(53.310001, actualVal, 0.00001);
+    public void extractCurrencyRateTest() {
+        float actualVal = 0;
+
+        try {
+            actualVal = underTest.getRate(Currencies.USD, Currencies.CZK);
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+
+        Assert.assertNotEquals(0, actualVal, 0.00001);
     }
 }

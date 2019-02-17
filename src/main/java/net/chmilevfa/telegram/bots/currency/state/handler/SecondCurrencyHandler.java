@@ -67,16 +67,18 @@ public final class SecondCurrencyHandler implements StateHandler {
         }
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
         Currencies secondCurrency = Currencies.valueOf(message.getText().trim());
-        float rate = 0;
+
+        String responseText;
         try {
-            rate = currencyService.getRate(firstCurrency, secondCurrency);
+            float rate = currencyService.getRate(firstCurrency, secondCurrency);
+            responseText = String.format(
+                    localisationService.getString("currencyRate", language),
+                    firstCurrency, secondCurrency, String.format("%.2f", rate)
+            );
         } catch (IOException e) {
             logger.error("Error during requesting currency rate", e);
+            responseText = localisationService.getString("currencyServiceError", language);
         }
-        String responseText = String.format(
-                localisationService.getString("currencyRate", language),
-                firstCurrency, secondCurrency, String.format("%.2f", rate)
-        );
 
         ReplyKeyboardMarkup replyKeyboardMarkup = MessageUtils.getMainMenuKeyboard(language, localisationService);
         return MessageUtils
