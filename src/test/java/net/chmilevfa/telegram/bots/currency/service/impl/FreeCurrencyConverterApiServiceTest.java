@@ -24,7 +24,8 @@ public class FreeCurrencyConverterApiServiceTest {
 
     @Before
     public void init() {
-        FreeCurrencyConverterApiService real = new FreeCurrencyConverterApiService();
+        // apiKey is not needed here anyway
+        FreeCurrencyConverterApiService real = new FreeCurrencyConverterApiService("1234");
         underTest = spy(real);
     }
 

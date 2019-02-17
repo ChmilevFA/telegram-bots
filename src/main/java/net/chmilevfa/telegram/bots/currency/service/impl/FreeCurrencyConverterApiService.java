@@ -1,6 +1,7 @@
 package net.chmilevfa.telegram.bots.currency.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.VisibleForTesting;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Service for getting an up-to-date currency rate.
+ * Service for getting an up-to-date currency rate from an external website.
  *
  * @author chmilevfa
  * @since 07.07.18
@@ -35,15 +36,12 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /** ApiKey for external service */
-    @Value("${freecurrencyconverter.apiKey}")
-    private String apiKey;
+    private static String apiKey;
 
-    /**
-     * Get rate for pair of currencies.
-     * @param from currency to convert from.
-     * @param to currency to convert to.
-     * @return current rate for from/to.
-     */
+    public FreeCurrencyConverterApiService(@Value("${freecurrencyconverter.apiKey}") String apiKeyFromProperties) {
+        apiKey = apiKeyFromProperties;
+    }
+
     @Override
     public float getRate(Currencies from, Currencies to) throws IOException {
         String currencyArg = from.name() + "_" + to.name();
@@ -51,10 +49,10 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
     }
 
     /**
-     *
      * @param currencyArg currencies names joined by "_"
      * @return content from external website
      */
+    @VisibleForTesting
     String fetchExternalContent(String currencyArg) throws IOException {
         String uri = String.format(CURRENCY_CONVERTER_URL, currencyArg, apiKey);
 
@@ -77,8 +75,9 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
         return contentBuilder.toString();
     }
 
-    float extractCurrencyRate(String data, String currencyArg) throws IOException {
-        String textValue = MAPPER.readTree(data).at("/" + currencyArg + "/val").asText();
+    @VisibleForTesting
+    float extractCurrencyRate(String jsonData, String currencyArg) throws IOException {
+        String textValue = MAPPER.readTree(jsonData).at("/" + currencyArg + "/val").asText();
         return Float.parseFloat(textValue);
     }
 }
