@@ -1,5 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.service.impl;
 
+import net.chmilevfa.telegram.bots.BotConfig;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,8 +25,7 @@ public class FreeCurrencyConverterApiServiceTest {
 
     @Before
     public void init() {
-        // apiKey is not needed here anyway
-        FreeCurrencyConverterApiService real = new FreeCurrencyConverterApiService("1234");
+        FreeCurrencyConverterApiService real = new FreeCurrencyConverterApiService(mock(BotConfig.class));
         underTest = spy(real);
     }
 

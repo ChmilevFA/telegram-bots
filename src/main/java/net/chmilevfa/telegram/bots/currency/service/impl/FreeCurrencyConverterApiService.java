@@ -2,12 +2,11 @@ package net.chmilevfa.telegram.bots.currency.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import net.chmilevfa.telegram.bots.BotConfig;
 import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.service.CurrencyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -23,7 +22,6 @@ import java.net.URL;
  * @since 07.07.18
  */
 @Service("currencyService")
-@PropertySource("classpath:currencyservice.properties")
 public class FreeCurrencyConverterApiService implements CurrencyService {
 
     private static Logger logger = LoggerFactory.getLogger(FreeCurrencyConverterApiService.class);
@@ -38,8 +36,8 @@ public class FreeCurrencyConverterApiService implements CurrencyService {
     /** ApiKey for external service */
     private static String apiKey;
 
-    public FreeCurrencyConverterApiService(@Value("${freecurrencyconverter.apiKey}") String apiKeyFromProperties) {
-        apiKey = apiKeyFromProperties;
+    public FreeCurrencyConverterApiService(BotConfig botConfig) {
+        apiKey = botConfig.getFreeCurrencyConverterApiKey();
     }
 
     @Override
