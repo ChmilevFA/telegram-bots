@@ -1,4 +1,4 @@
 language: java
 jdk:
-  - oraclejdk10
+  - openjdk10
 script: ./gradlew clean check
