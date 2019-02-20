@@ -1,4 +1,10 @@
 language: java
 jdk:
   - openjdk10
-script: ./gradlew clean check
+before_script:
+  - chmod +x gradlew
+script:
+  - ./gradlew clean check
+  - ./gradlew jacocoTestReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

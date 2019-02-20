@@ -1,6 +1,7 @@
 ## Simple currency bot for telegram
 
 [![Build Status](https://www.travis-ci.com/ChmilevFA/telegram-bots.svg?branch=master)](https://www.travis-ci.com/ChmilevFA/telegram-bots)
+[![codecov](https://codecov.io/gh/ChmilevFA/telegram-bots/branch/master/graph/badge.svg)](https://codecov.io/gh/ChmilevFA/telegram-bots)
 
 This is a simple Telegram bot which can show you different exchange rates for different currencies.
 
