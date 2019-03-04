@@ -9,7 +9,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'jacoco'
 
-sourceCompatibility = JavaVersion.VERSION_1_10
+sourceCompatibility = '1.11'
 
 repositories {
     mavenCentral()
