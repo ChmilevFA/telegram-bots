@@ -113,4 +113,9 @@ public class FirstCurrencyHandlerTest {
 
         verify(mockedStateHandler, times(1)).getMessageToSend(eq(mockedMessage), eq(actualLanguage));
     }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.CHOOSE_CURRENT_RATE_FIRST);
+    }
 }

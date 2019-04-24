@@ -184,4 +184,9 @@ public class MainMenuStateHandlerTest {
                 .getMessageToSend(eq(mockedMessage), eq(actualLanguage));
         verify(mockedDao, times(0)).saveMessageState(any(), any(), any());
     }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.MAIN_MENU);
+    }
 }
