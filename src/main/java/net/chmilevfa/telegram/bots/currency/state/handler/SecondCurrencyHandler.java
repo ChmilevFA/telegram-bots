@@ -63,7 +63,7 @@ public final class SecondCurrencyHandler implements StateHandler {
     private SendMessage onCurrentRateChosen(Message message, Language language) {
         Currencies firstCurrency = dao.getFirstUserCurrency(message.getChatId());
         if (Objects.isNull(firstCurrency)) {
-            defaultStateHandler.getMessageToSend(message, language);
+            return defaultStateHandler.getMessageToSend(message, language);
         }
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.MAIN_MENU);
         Currencies secondCurrency = Currencies.valueOf(message.getText().trim());

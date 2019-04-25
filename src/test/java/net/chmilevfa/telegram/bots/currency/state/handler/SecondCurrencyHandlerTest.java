@@ -137,4 +137,24 @@ public class SecondCurrencyHandlerTest {
         verify(mockedDao, times(0)).saveMessageState(any(), any(), any());
         verify(mockedLocalisationService, times(0)).getString(any(), any());
     }
+
+    @Test
+    public void callDefaultStateHandlerWhenNoFirstUserCurrency() {
+        Language actualLanguage = Language.ENGLISH;
+        Currencies expectedCurrency = Currencies.USD;
+        when(mockedMessage.hasText()).thenReturn(true);
+        when(mockedMessage.getText()).thenReturn(expectedCurrency.name());
+
+        underTestHandler.getMessageToSend(mockedMessage, actualLanguage);
+
+        verify(mockedDefaultStateHandler, times(1))
+                .getMessageToSend(eq(mockedMessage), eq(actualLanguage));
+        verify(mockedDao, times(0)).saveMessageState(any(), any(), any());
+        verify(mockedLocalisationService, times(0)).getString(any(), any());
+    }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.CHOOSE_CURRENT_RATE_SECOND);
+    }
 }

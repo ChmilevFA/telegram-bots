@@ -2,6 +2,7 @@ package net.chmilevfa.telegram.bots.currency.state.handler;
 
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
+import net.chmilevfa.telegram.bots.currency.state.MessageState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,5 +56,10 @@ public class FeedbackStateHandlerTest {
         assertEquals(expectedMessageId, actualSendMessage.getReplyToMessageId());
         assertTrue(actualSendMessage.getText().contains(expectedHelloMessage));
         assertTrue(actualSendMessage.getText().contains(expectedThanksFeedback));
+    }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.FEEDBACK);
     }
 }

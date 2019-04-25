@@ -114,4 +114,9 @@ public class LanguagesStateHandlerTest {
         verify(mockedDao, times(0)).saveLanguage(any(), any());
         verify(mockedLocalisationService, times(0)).getString(any(), any());
     }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.LANGUAGES);
+    }
 }

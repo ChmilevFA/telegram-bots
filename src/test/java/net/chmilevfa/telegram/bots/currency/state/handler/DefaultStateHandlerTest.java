@@ -70,4 +70,9 @@ public class DefaultStateHandlerTest {
         assertEquals(expectedHelloMessage, actualSendMessage.getText());
         assertEquals(expectedMessageId, actualSendMessage.getReplyToMessageId());
     }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.DEFAULT);
+    }
 }

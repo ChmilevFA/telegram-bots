@@ -129,4 +129,9 @@ public class SettingsStateHandlerTest {
                 .getMessageToSend(eq(mockedMessage), eq(expectedLanguage));
         verify(mockedDao, times(0)).saveMessageState(any(), any(), any());
     }
+
+    @Test
+    public void getCorrectProcessedMessageState() {
+        assertEquals(underTestHandler.getProcessedMessageState(), MessageState.SETTINGS);
+    }
 }
