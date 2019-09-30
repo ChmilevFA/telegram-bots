@@ -14,7 +14,8 @@ public enum Currencies {
     USD,
     PLN,
     RUB,
-    CZK;
+    CZK,
+    GBP;
 
     public static boolean containsByName(String name) {
         return Arrays.stream(Currencies.values())
