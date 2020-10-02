@@ -25,7 +25,7 @@ abstract class AbstractCurrencyStateHandler {
         this.localisationService = localisationService;
     }
 
-    ReplyKeyboardMarkup getCurrenciesKeyboard(Language language) {
+    ReplyKeyboardMarkup getCurrenciesKeyboard(Language language, Currencies[] currencies) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         replyKeyboardMarkup.setSelective(true);
@@ -34,7 +34,6 @@ abstract class AbstractCurrencyStateHandler {
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
 
-        Currencies[] currencies = Currencies.values();
         for (int i = 0; i < currencies.length; i++) {
             if (i > 0 && i % NUMBER_ELEMENTS_IN_ROW == 0) {
                 keyboardRows.add(keyboardRow);

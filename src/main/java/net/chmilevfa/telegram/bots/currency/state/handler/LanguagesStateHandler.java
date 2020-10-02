@@ -24,7 +24,7 @@ public final class LanguagesStateHandler implements StateHandler {
 
     private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.LANGUAGES;
 
-    private static Logger logger = LoggerFactory.getLogger(LanguagesStateHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(LanguagesStateHandler.class);
 
     private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;

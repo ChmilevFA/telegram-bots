@@ -29,7 +29,7 @@ public final class SecondCurrencyHandler implements StateHandler {
 
     private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.CHOOSE_CURRENT_RATE_SECOND;
 
-    private static Logger logger = LoggerFactory.getLogger(SecondCurrencyHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecondCurrencyHandler.class);
 
     private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;

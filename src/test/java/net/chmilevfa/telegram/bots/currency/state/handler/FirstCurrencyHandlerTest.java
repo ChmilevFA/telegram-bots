@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -100,7 +99,11 @@ public class FirstCurrencyHandlerTest {
         assertEquals(expectedCurrency, currencyCaptor.getValue());
         assertTrue(buttonsText.contains(expectedGoToMainMenu));
         for (Currencies currency : Currencies.values()) {
-            assertTrue(buttonsText.contains(currency.name()));
+            if(currency.equals(expectedCurrency)) {
+                assertFalse(buttonsText.contains(currency.name()));
+            } else {
+                assertTrue(buttonsText.contains(currency.name()));
+            }
         }
     }
 
