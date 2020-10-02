@@ -21,7 +21,7 @@ import java.io.IOException;
 @Repository("dao")
 public class JsonFileDao implements Dao, AutoCloseable {
 
-    private static Logger logger = LoggerFactory.getLogger(JsonFileDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonFileDao.class);
 
     private final static String FILE_NAME = "data.json";
 
