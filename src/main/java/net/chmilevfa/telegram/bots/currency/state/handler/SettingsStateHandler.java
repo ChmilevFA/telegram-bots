@@ -27,7 +27,7 @@ public final class SettingsStateHandler implements StateHandler {
 
     private static final MessageState PROCESSED_MESSAGE_STATE = MessageState.SETTINGS;
 
-    private static Logger logger = LoggerFactory.getLogger(SettingsStateHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SettingsStateHandler.class);
 
     private final LocalisationService localisationService;
     private final StateHandler defaultStateHandler;

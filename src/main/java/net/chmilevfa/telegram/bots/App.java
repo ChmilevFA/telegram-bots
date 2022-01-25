@@ -11,7 +11,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class App {
 
-    private static Logger logger = LoggerFactory.getLogger(App.class);
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
         ApiContextInitializer.init();

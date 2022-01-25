@@ -1,5 +1,6 @@
 package net.chmilevfa.telegram.bots.currency.state.handler;
 
+import net.chmilevfa.telegram.bots.currency.Currencies;
 import net.chmilevfa.telegram.bots.currency.dao.Dao;
 import net.chmilevfa.telegram.bots.currency.service.language.Language;
 import net.chmilevfa.telegram.bots.currency.service.language.LocalisationService;
@@ -70,7 +71,7 @@ public final class MainMenuStateHandler extends AbstractCurrencyStateHandler imp
 
     private SendMessage onCurrentRateChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.CHOOSE_CURRENT_RATE_FIRST);
-        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language);
+        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language, Currencies.values());
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
                 localisationService.getString("chooseFirstCurrency", language));
     }

@@ -11,6 +11,8 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.util.Arrays;
+
 /**
  * An implementation of {@link StateHandler} which deals with first chosen currency.
  *
@@ -50,8 +52,12 @@ public final class FirstCurrencyHandler extends AbstractCurrencyStateHandler imp
 
     private SendMessage onCurrentRateChosen(Message message, Language language) {
         dao.saveMessageState(message.getFrom().getId(), message.getChatId(), MessageState.CHOOSE_CURRENT_RATE_SECOND);
-        dao.saveFirstUserCurrency(message.getChatId(), Currencies.valueOf(message.getText().trim()));
-        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language);
+        Currencies chosenFirstCurrency = Currencies.valueOf(message.getText().trim());
+        dao.saveFirstUserCurrency(message.getChatId(), chosenFirstCurrency);
+        Currencies[] currenciesWithoutFirstChosen = Arrays.stream(Currencies.values())
+                .filter(currency -> !chosenFirstCurrency.equals(currency))
+                .toArray(Currencies[]::new);
+        ReplyKeyboardMarkup replyKeyboardMarkup = getCurrenciesKeyboard(language, currenciesWithoutFirstChosen);
         return MessageUtils.getSendMessageWithKeyboard(message, replyKeyboardMarkup,
                 localisationService.getString("chooseSecondCurrency", language));
     }

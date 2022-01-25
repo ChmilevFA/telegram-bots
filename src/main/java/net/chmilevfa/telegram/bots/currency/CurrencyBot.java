@@ -31,7 +31,7 @@ import java.util.List;
 @Service("currencyBot")
 public class CurrencyBot extends TelegramLongPollingBot {
 
-    private static Logger logger = LoggerFactory.getLogger(CurrencyBot.class);
+    private static final Logger logger = LoggerFactory.getLogger(CurrencyBot.class);
 
     private final BotConfig config;
 
